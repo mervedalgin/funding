@@ -1,0 +1,4 @@
+https://pvjtpqdrregydavtdkhf.supabase.co
+sb_publishable_8QaoZvAiuIWxfiL0_NABbg_RWj5q_ft
+postgresql://postgres:[YOUR-PASSWORD]@db.pvjtpqdrregydavtdkhf.supabase.co:5432/postgres
+password: RG0sjKYKjlXS9YI7
