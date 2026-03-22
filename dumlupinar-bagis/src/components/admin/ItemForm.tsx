@@ -2,11 +2,12 @@ import { useState, useRef } from 'react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
-import { Upload, ImageIcon, X as XIcon } from 'lucide-react'
+import { Upload, ImageIcon, X as XIcon, Info } from 'lucide-react'
 import type { DonationItem } from '../../types/donation'
+import { processImageWithPreview, IMAGE_TARGET_WIDTH, IMAGE_TARGET_HEIGHT } from '../../lib/imageUtils'
 
-const MAX_FILE_SIZE = 2 * 1024 * 1024 // 2MB
-const ACCEPTED_TYPES = ['image/jpeg', 'image/png', 'image/webp']
+const MAX_FILE_SIZE = 5 * 1024 * 1024 // 5MB (before processing)
+const ACCEPTED_TYPES = ['image/jpeg', 'image/png', 'image/webp', 'image/gif', 'image/bmp']
 
 const schema = z.object({
   title: z.string().min(1, 'Başlık zorunlu').max(200, 'Başlık en fazla 200 karakter olabilir'),
@@ -84,28 +85,37 @@ export default function ItemForm({ item, onSubmit, onCancel }: ItemFormProps) {
   const [fileError, setFileError] = useState<string | null>(null)
   const fileInputRef = useRef<HTMLInputElement>(null)
 
-  const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const [processing, setProcessing] = useState(false)
+
+  const handleFileSelect = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]
     setFileError(null)
     if (!file) return
 
     if (!ACCEPTED_TYPES.includes(file.type)) {
-      setFileError('Sadece JPG, PNG ve WebP formatları kabul edilir')
+      setFileError('Desteklenen formatlar: JPG, PNG, WebP, GIF, BMP')
       return
     }
     if (file.size > MAX_FILE_SIZE) {
-      setFileError('Dosya boyutu 2MB\'den küçük olmalıdır')
+      setFileError('Dosya boyutu 5MB\'den küçük olmalıdır')
       return
     }
 
-    const reader = new FileReader()
-    reader.onload = (ev) => {
-      const base64 = ev.target?.result as string
-      setFilePreview(base64)
-      // Set as base64 data URL for now — will be replaced with Supabase Storage URL later
-      setValue('image_url', base64)
+    try {
+      setProcessing(true)
+      const { file: processed, previewUrl } = await processImageWithPreview(file)
+      setFilePreview(previewUrl)
+      // Convert to base64 for form storage — will be replaced with Supabase Storage URL later
+      const reader = new FileReader()
+      reader.onload = (ev) => {
+        setValue('image_url', ev.target?.result as string)
+      }
+      reader.readAsDataURL(processed)
+    } catch {
+      setFileError('Resim işlenirken hata oluştu. Lütfen başka bir resim deneyin.')
+    } finally {
+      setProcessing(false)
     }
-    reader.readAsDataURL(file)
   }
 
   const clearFilePreview = () => {
@@ -211,6 +221,15 @@ export default function ItemForm({ item, onSubmit, onCancel }: ItemFormProps) {
       <div className={sectionClass}>
         <h3 className={sectionTitleClass}>Görsel</h3>
 
+        {/* Image guidelines */}
+        <div className="flex items-start gap-2 bg-blue-50 border border-blue-100 rounded-xl px-3.5 py-2.5">
+          <Info className="w-4 h-4 text-blue-500 shrink-0 mt-0.5" />
+          <div className="text-xs text-blue-700 space-y-0.5">
+            <p className="font-medium">Herhangi bir resim yükleyebilirsiniz — otomatik olarak optimize edilir.</p>
+            <p>Çıktı: {IMAGE_TARGET_WIDTH}x{IMAGE_TARGET_HEIGHT}px, WebP formatı, 2:1 yatay oran. Resmin ortası korunur, kenarlar kırpılır.</p>
+          </div>
+        </div>
+
         {/* Image preview */}
         {currentPreview && (
           <div className="relative group">
@@ -240,25 +259,38 @@ export default function ItemForm({ item, onSubmit, onCancel }: ItemFormProps) {
         <div>
           <label className={labelClass}>veya Dosya Yükle</label>
           <div
-            onClick={() => fileInputRef.current?.click()}
-            className="border-2 border-dashed border-gray-200 rounded-xl p-6 text-center cursor-pointer hover:border-primary-300 hover:bg-primary-50/30 transition-all duration-200"
+            onClick={() => !processing && fileInputRef.current?.click()}
+            className={`border-2 border-dashed rounded-xl p-6 text-center transition-all duration-200 ${
+              processing
+                ? 'border-primary-300 bg-primary-50/30 cursor-wait'
+                : 'border-gray-200 cursor-pointer hover:border-primary-300 hover:bg-primary-50/30'
+            }`}
           >
             <input
               ref={fileInputRef}
               type="file"
-              accept=".jpg,.jpeg,.png,.webp"
+              accept="image/*"
               onChange={handleFileSelect}
               className="hidden"
             />
             <div className="flex flex-col items-center gap-2">
-              {filePreview ? (
-                <ImageIcon className="w-8 h-8 text-primary-400" />
+              {processing ? (
+                <>
+                  <div className="w-8 h-8 border-3 border-primary-200 border-t-primary-500 rounded-full animate-spin" />
+                  <p className="text-sm text-primary-600 font-medium">Resim optimize ediliyor...</p>
+                </>
+              ) : filePreview ? (
+                <>
+                  <ImageIcon className="w-8 h-8 text-primary-400" />
+                  <p className="text-sm text-gray-500">Başka bir dosya seçmek için tıklayın</p>
+                </>
               ) : (
-                <Upload className="w-8 h-8 text-gray-300" />
+                <>
+                  <Upload className="w-8 h-8 text-gray-300" />
+                  <p className="text-sm text-gray-500">Herhangi bir resim dosyası seçin (max 5MB)</p>
+                  <p className="text-xs text-gray-400">Otomatik olarak 1200x600 WebP'ye dönüştürülür</p>
+                </>
               )}
-              <p className="text-sm text-gray-500">
-                {filePreview ? 'Başka bir dosya seçmek için tıklayın' : 'JPG, PNG veya WebP (max 2MB)'}
-              </p>
             </div>
           </div>
           {fileError && <p className="text-red-500 text-xs mt-1">{fileError}</p>}
