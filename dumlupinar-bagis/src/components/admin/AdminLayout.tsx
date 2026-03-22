@@ -8,23 +8,25 @@ import {
   Menu,
   X,
   Package,
-  Users,
+  HandCoins,
   Settings,
   ChevronsLeft,
   ChevronsRight,
   GraduationCap,
   MessageCircle,
+  Scale,
 } from 'lucide-react'
 import { useAuth } from '../../hooks/useAuth'
 
 const navItems = [
   { label: 'Anasayfa', to: '/', icon: Home, external: true },
   { label: 'Dashboard', to: '/admin/dashboard', icon: LayoutDashboard },
-  { label: 'Bağış Kalemleri', to: '/admin/dashboard?tab=items', icon: Package },
+  { label: 'Bağış Kalemleri', to: '/admin/items', icon: Package },
+  { label: 'Bağışlar', to: '/admin/donations', icon: HandCoins },
+  { label: 'Öğrenci İhtiyaçları', to: '/admin/students', icon: GraduationCap },
+  { label: 'S.S.S', to: '/admin/faq', icon: MessageCircle },
+  { label: 'Yasal Dayanak', to: '/admin/legal', icon: Scale },
   { label: 'Ödeme Kanalları', to: '/admin/payment-channels', icon: CreditCard },
-  { label: 'Bağışlar', to: '/admin/dashboard?tab=donations', icon: Users },
-  { label: 'Öğrenci İhtiyaçları', to: '/admin/dashboard?tab=students', icon: GraduationCap },
-  { label: 'S.S.S', to: '/admin/dashboard?tab=faq', icon: MessageCircle },
   { label: 'Ayarlar', to: '/admin/settings', icon: Settings },
 ]
 
@@ -41,11 +43,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   }
 
   const isActive = (item: typeof navItems[number]) => {
-    const itemUrl = new URL(item.to, window.location.origin)
-    if (itemUrl.searchParams.has('tab')) {
-      return location.pathname === itemUrl.pathname && location.search === itemUrl.search
-    }
-    return location.pathname === item.to && !location.search
+    return location.pathname === item.to
   }
 
   return (
