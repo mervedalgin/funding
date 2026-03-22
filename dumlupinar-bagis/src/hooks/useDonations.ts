@@ -162,15 +162,16 @@ export function useDonations(isAdmin = false) {
     if (err) throw err
 
     // 2. Get donation details for stats update
+    const fkField = table === 'student_donations' ? 'student_need_id' : 'item_id'
     const { data: donation } = await supabase
       .from(table)
-      .select('amount, item_id, student_need_id')
+      .select(`amount, ${fkField}`)
       .eq('id', id)
       .single()
 
     // 3. Increment collected_amount + donor_count on the linked item
     if (donation) {
-      const itemId = table === 'student_donations' ? donation.student_need_id : donation.item_id
+      const itemId = (donation as Record<string, unknown>)[fkField] as string | null
       if (itemId && donation.amount) {
         const rpcName = table === 'student_donations' ? 'increment_student_need_stats' : 'increment_donation_stats'
         const paramName = table === 'student_donations' ? 'p_need_id' : 'p_item_id'
