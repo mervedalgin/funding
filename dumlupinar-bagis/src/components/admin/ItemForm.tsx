@@ -1,16 +1,18 @@
-import { useState, useRef } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
 import { Upload, ImageIcon, X as XIcon, Info } from 'lucide-react'
 import type { DonationItem } from '../../types/donation'
 import { processImageWithPreview, IMAGE_TARGET_WIDTH, IMAGE_TARGET_HEIGHT } from '../../lib/imageUtils'
+import { slugify } from '../../lib/slugify'
 
 const MAX_FILE_SIZE = 5 * 1024 * 1024 // 5MB (before processing)
 const ACCEPTED_TYPES = ['image/jpeg', 'image/png', 'image/webp', 'image/gif', 'image/bmp']
 
 const schema = z.object({
   title: z.string().min(1, 'Başlık zorunlu').max(200, 'Başlık en fazla 200 karakter olabilir'),
+  slug: z.string().min(1, 'URL slug zorunlu').max(80),
   description: z.string().max(2000, 'Açıklama en fazla 2000 karakter olabilir').optional(),
   image_url: z.string().optional().refine(
     (val) => !val || val.startsWith('https://') || val.startsWith('data:'),
@@ -54,6 +56,7 @@ export default function ItemForm({ item, onSubmit, onCancel }: ItemFormProps) {
     resolver: zodResolver(schema) as never,
     defaultValues: item ? {
       title: item.title,
+      slug: item.slug ?? '',
       description: item.description ?? '',
       image_url: item.image_url ?? '',
       price: item.price,
@@ -70,6 +73,7 @@ export default function ItemForm({ item, onSubmit, onCancel }: ItemFormProps) {
       status: item.status,
       sort_order: item.sort_order,
     } : {
+      slug: '',
       status: 'draft',
       price: 0,
       donor_count: 0,
@@ -79,6 +83,15 @@ export default function ItemForm({ item, onSubmit, onCancel }: ItemFormProps) {
       sort_order: 0,
     },
   })
+
+  const titleValue = watch('title')
+
+  // Auto-generate slug from title (only for new items)
+  useEffect(() => {
+    if (!item && titleValue) {
+      setValue('slug', slugify(titleValue))
+    }
+  }, [titleValue, item, setValue])
 
   const imageUrl = watch('image_url')
   const [filePreview, setFilePreview] = useState<string | null>(null)
@@ -140,6 +153,14 @@ export default function ItemForm({ item, onSubmit, onCancel }: ItemFormProps) {
           <label className={labelClass}>Başlık *</label>
           <input {...register('title')} className={inputClass} placeholder="Örn: Akıllı Tahta" />
           {errors.title && <p className="text-red-500 text-xs mt-1">{errors.title.message as string}</p>}
+        </div>
+        <div>
+          <label className={labelClass}>URL Slug</label>
+          <div className="flex items-center gap-2">
+            <span className="text-sm text-gray-400 shrink-0">/ihtiyac/</span>
+            <input {...register('slug')} className={inputClass} placeholder="akilli-tahta" />
+          </div>
+          {errors.slug && <p className="text-red-500 text-xs mt-1">{errors.slug.message as string}</p>}
         </div>
         <div>
           <label className={labelClass}>Açıklama</label>

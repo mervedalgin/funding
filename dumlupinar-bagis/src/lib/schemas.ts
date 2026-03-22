@@ -2,6 +2,7 @@ import { z } from 'zod'
 
 export const DonationItemSchema = z.object({
   id: z.string(),
+  slug: z.string(),
   title: z.string(),
   description: z.string().nullable(),
   image_url: z.string().nullable(),
@@ -53,6 +54,7 @@ export const DonationSchema = z.object({
 
 export const StudentNeedSchema = z.object({
   id: z.string(),
+  slug: z.string(),
   title: z.string(),
   description: z.string().nullable(),
   image_url: z.string().nullable(),

@@ -4,6 +4,7 @@ export type AmountOption = 'full' | 'half' | 'custom'
 
 export interface DonationItem {
   id: string
+  slug: string
   title: string
   description: string | null
   image_url: string | null
@@ -111,6 +112,7 @@ export interface AuditLog {
 
 export interface StudentNeed {
   id: string
+  slug: string
   title: string
   description: string | null
   image_url: string | null

@@ -3,7 +3,7 @@ import { useParams, Link } from 'react-router-dom'
 import { Helmet } from 'react-helmet-async'
 import { ArrowLeft, Package, Heart } from 'lucide-react'
 import Navbar from '../components/Navbar'
-import { supabase } from '../lib/supabaseClient'
+import { useDonationItems } from '../hooks/useDonationItems'
 import { usePaymentChannels } from '../hooks/usePaymentChannels'
 import type { DonationItem, AmountOption } from '../types/donation'
 import AmountSelector from '../components/AmountSelector'
@@ -14,7 +14,8 @@ import { getOptimizedImageUrl } from '../lib/imageUtils'
 import { isSecureImageUrl } from '../lib/validation'
 
 export default function ItemDetail() {
-  const { id } = useParams<{ id: string }>()
+  const { slug } = useParams<{ slug: string }>()
+  const { fetchItemBySlug } = useDonationItems()
   const [item, setItem] = useState<DonationItem | null>(null)
   const [loading, setLoading] = useState(true)
   const [selectedAmount, setSelectedAmount] = useState(0)
@@ -22,23 +23,18 @@ export default function ItemDetail() {
   const { channels } = usePaymentChannels(isCompleted ?? false)
 
   useEffect(() => {
-    const fetchItem = async () => {
-      if (!id) return
-      const { data } = await supabase
-        .from('donation_items')
-        .select('*')
-        .eq('id', id)
-        .single()
-
+    const load = async () => {
+      if (!slug) return
+      const data = await fetchItemBySlug(slug)
       if (data) {
-        setItem(data as DonationItem)
+        setItem(data)
         const remaining = data.target_amount > 0 ? Math.max(0, data.target_amount - data.collected_amount) : data.price
         setSelectedAmount(remaining)
       }
       setLoading(false)
     }
-    fetchItem()
-  }, [id])
+    load()
+  }, [slug, fetchItemBySlug])
 
   const handleAmountSelect = (amount: number, _option: AmountOption) => {
     setSelectedAmount(amount)

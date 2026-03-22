@@ -8,6 +8,7 @@ import Contact from './pages/Contact'
 import AdminGuard from './components/admin/AdminGuard'
 import ErrorBoundary from './components/ErrorBoundary'
 import OfflineBanner from './components/OfflineBanner'
+import { ItemIdRedirect, StudentNeedIdRedirect } from './components/ItemRedirect'
 
 const Donors = lazy(() => import('./pages/Donors'))
 const PaymentResult = lazy(() => import('./pages/PaymentResult'))
@@ -39,12 +40,17 @@ export default function App() {
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/item/:id" element={<ItemDetail />} />
+          <Route path="/ihtiyac/:slug" element={<ItemDetail />} />
+          <Route path="/ogrenci-ihtiyaci/:slug" element={<Suspense fallback={AdminFallback}><StudentNeedDetail /></Suspense>} />
+          {/* Eski URL redirect'leri (SEO + paylaşılmış link koruma) */}
+          <Route path="/item/:id" element={<ItemIdRedirect />} />
+          <Route path="/ihtiyac-id/:id" element={<ItemIdRedirect />} />
+          <Route path="/student-need/:id" element={<StudentNeedIdRedirect />} />
+          <Route path="/ogrenci-ihtiyaci-id/:id" element={<StudentNeedIdRedirect />} />
           <Route path="/yasal-dayanak" element={<LegalBasis />} />
           <Route path="/iletisim" element={<Contact />} />
           <Route path="/bagiscilarimiz" element={<Suspense fallback={AdminFallback}><Donors /></Suspense>} />
           <Route path="/odeme-sonucu" element={<Suspense fallback={AdminFallback}><PaymentResult /></Suspense>} />
-          <Route path="/student-need/:id" element={<Suspense fallback={AdminFallback}><StudentNeedDetail /></Suspense>} />
           <Route path="/sss" element={<Suspense fallback={AdminFallback}><FAQ /></Suspense>} />
           <Route path="/bagis-hikayeleri" element={<Suspense fallback={AdminFallback}><StoriesPage /></Suspense>} />
           <Route path="/bagis-hikayeleri/:slug" element={<Suspense fallback={AdminFallback}><StoryDetail /></Suspense>} />

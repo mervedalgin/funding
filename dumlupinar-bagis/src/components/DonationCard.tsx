@@ -16,7 +16,7 @@ export default function DonationCard({ item }: DonationCardProps) {
 
   return (
     <Link
-      to={`/item/${item.id}`}
+      to={`/ihtiyac/${item.slug}`}
       className="group block relative bg-white rounded-2xl shadow-sm border border-gray-100 hover:shadow-2xl hover:-translate-y-2 transition-all duration-500 overflow-hidden"
     >
       {/* Image section with overlay */}

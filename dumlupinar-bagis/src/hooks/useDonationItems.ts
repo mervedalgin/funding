@@ -72,5 +72,25 @@ export function useDonationItems(includeAll = false) {
     await fetchItems()
   }
 
-  return { items, loading, error, fetchItems, createItem, updateItem, deleteItem }
+  const fetchItemBySlug = useCallback(async (slug: string): Promise<DonationItem | null> => {
+    const { data, error: err } = await supabase
+      .from('donation_items')
+      .select('*')
+      .eq('slug', slug)
+      .single()
+    if (err || !data) return null
+    return DonationItemSchema.parse(data)
+  }, [])
+
+  const fetchItemById = useCallback(async (id: string): Promise<DonationItem | null> => {
+    const { data, error: err } = await supabase
+      .from('donation_items')
+      .select('*')
+      .eq('id', id)
+      .single()
+    if (err || !data) return null
+    return DonationItemSchema.parse(data)
+  }, [])
+
+  return { items, loading, error, fetchItems, fetchItemBySlug, fetchItemById, createItem, updateItem, deleteItem }
 }

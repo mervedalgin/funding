@@ -90,20 +90,8 @@ export function useStories(includeAll = false) {
   return { items, loading, error, fetchItems, fetchStory, incrementViewCount, createItem, updateItem, deleteItem }
 }
 
-/** Generate URL-friendly slug from title */
-export function slugify(text: string): string {
-  const turkishMap: Record<string, string> = { 'ç': 'c', 'ğ': 'g', 'ı': 'i', 'ö': 'o', 'ş': 's', 'ü': 'u', 'Ç': 'c', 'Ğ': 'g', 'İ': 'i', 'Ö': 'o', 'Ş': 's', 'Ü': 'u' }
-  return text
-    .split('')
-    .map(c => turkishMap[c] || c)
-    .join('')
-    .toLowerCase()
-    .replace(/[^a-z0-9\s-]/g, '')
-    .replace(/\s+/g, '-')
-    .replace(/-+/g, '-')
-    .replace(/^-|-$/g, '')
-    .slice(0, 80)
-}
+// Re-export slugify from shared utility
+export { slugify } from '../lib/slugify'
 
 /** Estimate reading time from HTML content */
 export function estimateReadingTime(html: string): number {

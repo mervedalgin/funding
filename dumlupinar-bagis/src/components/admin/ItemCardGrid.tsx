@@ -111,7 +111,7 @@ export default function ItemCardGrid({ items, onEdit, onDelete, onStatusChange }
                             Düzenle
                           </button>
                           <button
-                            onClick={() => window.open(`/item/${item.id}`, '_blank')}
+                            onClick={() => window.open(`/ihtiyac/${item.slug}`, '_blank')}
                             className="flex items-center gap-2.5 w-full px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50 transition-colors"
                           >
                             <Eye className="w-4 h-4 text-gray-500" />

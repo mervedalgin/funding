@@ -18,7 +18,7 @@ export default function StudentNeedCard({ item }: StudentNeedCardProps) {
 
   return (
     <Link
-      to={`/student-need/${item.id}`}
+      to={`/ogrenci-ihtiyaci/${item.slug}`}
       className="group block relative bg-white rounded-2xl shadow-sm border border-gray-100 hover:shadow-2xl hover:-translate-y-2 transition-all duration-500 overflow-hidden"
     >
       {/* Image section */}

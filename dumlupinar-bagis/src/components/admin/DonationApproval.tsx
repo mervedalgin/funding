@@ -452,7 +452,7 @@ export default function DonationApproval() {
             {detailItem.item_id && (
               <div className="space-y-2">
                 <h3 className="text-xs font-semibold text-gray-500 uppercase">Bağlantılı Kalem</h3>
-                <a href={detailItem.type === 'student' ? `/student-need/${detailItem.item_id}` : `/item/${detailItem.item_id}`} target="_blank" rel="noopener noreferrer"
+                <a href={detailItem.type === 'student' ? `/ogrenci-ihtiyaci-id/${detailItem.item_id}` : `/ihtiyac-id/${detailItem.item_id}`} target="_blank" rel="noopener noreferrer"
                   className="flex items-center gap-2 text-sm text-primary-600 hover:text-primary-700">
                   <ExternalLink className="w-4 h-4" /> Kalemi Görüntüle
                 </a>

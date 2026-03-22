@@ -72,5 +72,25 @@ export function useStudentNeeds(includeAll = false) {
     await fetchItems()
   }
 
-  return { items, loading, error, fetchItems, createItem, updateItem, deleteItem }
+  const fetchNeedBySlug = useCallback(async (slug: string): Promise<StudentNeed | null> => {
+    const { data, error: err } = await supabase
+      .from('student_needs')
+      .select('*')
+      .eq('slug', slug)
+      .single()
+    if (err || !data) return null
+    return StudentNeedSchema.parse(data)
+  }, [])
+
+  const fetchNeedById = useCallback(async (id: string): Promise<StudentNeed | null> => {
+    const { data, error: err } = await supabase
+      .from('student_needs')
+      .select('*')
+      .eq('id', id)
+      .single()
+    if (err || !data) return null
+    return StudentNeedSchema.parse(data)
+  }, [])
+
+  return { items, loading, error, fetchItems, fetchNeedBySlug, fetchNeedById, createItem, updateItem, deleteItem }
 }

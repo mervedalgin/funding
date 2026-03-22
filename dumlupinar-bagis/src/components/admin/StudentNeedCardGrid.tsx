@@ -98,7 +98,7 @@ export default function StudentNeedCardGrid({ items, onEdit, onDelete, onStatusC
                           <button onClick={() => { onEdit(item); setMenuOpenId(null) }} className="flex items-center gap-2.5 w-full px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50 transition-colors">
                             <Pencil className="w-4 h-4 text-indigo-500" /> Düzenle
                           </button>
-                          <button onClick={() => window.open(`/student-need/${item.id}`, '_blank')} className="flex items-center gap-2.5 w-full px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50 transition-colors">
+                          <button onClick={() => window.open(`/ogrenci-ihtiyaci/${item.slug}`, '_blank')} className="flex items-center gap-2.5 w-full px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50 transition-colors">
                             <Eye className="w-4 h-4 text-gray-500" /> Sayfada Gör
                           </button>
                           {onStatusChange && (
