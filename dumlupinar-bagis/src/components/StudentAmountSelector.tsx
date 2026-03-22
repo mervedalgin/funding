@@ -1,28 +1,38 @@
 import { useState, useRef, useEffect } from 'react'
-import { Check, Sparkles, Heart, HandHeart, Users } from 'lucide-react'
+import { Check, Sparkles, Heart, HandHeart, Users, TrendingUp } from 'lucide-react'
 import type { AmountOption } from '../types/donation'
 
 interface StudentAmountSelectorProps {
   unitPrice: number
   studentCount: number
+  targetAmount?: number
+  collectedAmount?: number
   onSelect: (amount: number, option: AmountOption) => void
 }
 
-export default function StudentAmountSelector({ unitPrice, studentCount, onSelect }: StudentAmountSelectorProps) {
+export default function StudentAmountSelector({ unitPrice, studentCount, targetAmount = 0, collectedAmount = 0, onSelect }: StudentAmountSelectorProps) {
   const [selected, setSelected] = useState<AmountOption>('full')
   const [customStudentCount, setCustomStudentCount] = useState<string>('1')
   const inputRef = useRef<HTMLInputElement>(null)
 
-  const fullTotal = studentCount * unitPrice
-  const halfUnitPrice = Math.round(unitPrice / 2)
-  const halfTotal = studentCount * halfUnitPrice
+  // Dynamic: use remaining if target exists
+  const isDynamic = targetAmount > 0
+  const remaining = isDynamic ? Math.max(0, targetAmount - collectedAmount) : studentCount * unitPrice
+  const progressPercent = isDynamic && targetAmount > 0 ? Math.min((collectedAmount / targetAmount) * 100, 100) : 0
+
+  const fullAmount = remaining
+  const halfAmount = Math.round(remaining / 2)
+
+  // For custom: how many students can still be covered
+  const remainingStudents = isDynamic ? Math.max(0, Math.ceil(remaining / unitPrice)) : studentCount
+  const maxCustomStudents = Math.min(remainingStudents, studentCount)
 
   const handleSelect = (option: AmountOption) => {
     setSelected(option)
-    if (option === 'full') onSelect(fullTotal, 'full')
-    else if (option === 'half') onSelect(halfTotal, 'half')
+    if (option === 'full') onSelect(fullAmount, 'full')
+    else if (option === 'half') onSelect(halfAmount, 'half')
     else if (option === 'custom') {
-      const count = Math.max(1, Math.min(Number(customStudentCount) || 1, studentCount))
+      const count = Math.max(1, Math.min(Number(customStudentCount) || 1, maxCustomStudents))
       onSelect(count * unitPrice, 'custom')
     }
   }
@@ -30,7 +40,7 @@ export default function StudentAmountSelector({ unitPrice, studentCount, onSelec
   const handleCustomChange = (value: string) => {
     setCustomStudentCount(value)
     const count = Number(value)
-    if (selected === 'custom' && count >= 1 && count <= studentCount) {
+    if (selected === 'custom' && count >= 1 && count <= maxCustomStudents) {
       onSelect(count * unitPrice, 'custom')
     }
   }
@@ -41,13 +51,44 @@ export default function StudentAmountSelector({ unitPrice, studentCount, onSelec
     }
   }, [selected])
 
-  const customCount = Math.max(1, Math.min(Number(customStudentCount) || 1, studentCount))
+  const customCount = Math.max(1, Math.min(Number(customStudentCount) || 1, maxCustomStudents))
   const customTotal = customCount * unitPrice
-  const isCustomValid = Number(customStudentCount) >= 1 && Number(customStudentCount) <= studentCount
+  const isCustomValid = Number(customStudentCount) >= 1 && Number(customStudentCount) <= maxCustomStudents
+
+  // Fully funded
+  if (isDynamic && remaining <= 0) {
+    return (
+      <div className="bg-emerald-50 border border-emerald-200 rounded-2xl p-6 text-center space-y-2">
+        <div className="w-12 h-12 bg-emerald-100 rounded-full flex items-center justify-center mx-auto">
+          <Check className="w-6 h-6 text-emerald-600" />
+        </div>
+        <p className="font-semibold text-emerald-800 text-lg">Bu ihtiyaç tamamen karşılandı!</p>
+        <p className="text-emerald-600 text-sm">Hayırseverlerimiz sayesinde hedefe ulaşıldı.</p>
+      </div>
+    )
+  }
 
   return (
     <div className="space-y-4">
       <h3 className="font-semibold text-gray-800 text-lg">Kaç Öğrenciye Destek Olmak İstersiniz?</h3>
+
+      {/* Progress info */}
+      {isDynamic && (
+        <div className="flex items-center gap-3 bg-indigo-50 border border-indigo-100 rounded-xl px-4 py-3">
+          <TrendingUp className="w-5 h-5 text-indigo-600 shrink-0" />
+          <div className="flex-1 min-w-0">
+            <div className="flex items-center justify-between text-sm mb-1">
+              <span className="text-indigo-700 font-medium">
+                Hedefe <strong>₺{remaining.toLocaleString('tr-TR')}</strong> kaldı
+              </span>
+              <span className="text-indigo-500 font-semibold">%{progressPercent.toFixed(0)}</span>
+            </div>
+            <div className="h-1.5 bg-indigo-100 rounded-full overflow-hidden">
+              <div className="h-full bg-indigo-500 rounded-full transition-all duration-500" style={{ width: `${progressPercent}%` }} />
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Info banner */}
       <div className="flex items-center gap-3 bg-indigo-50 border border-indigo-100 rounded-xl px-4 py-3">
@@ -91,15 +132,12 @@ export default function StudentAmountSelector({ unitPrice, studentCount, onSelec
             <div className={`text-xs font-semibold uppercase tracking-wider mb-1.5 transition-colors ${
               selected === 'full' ? 'text-indigo-600' : 'text-gray-400 group-hover:text-indigo-500'
             }`}>Tamamını Karşıla</div>
-            <div className={`text-sm font-medium mb-1 transition-colors ${
-              selected === 'full' ? 'text-indigo-500' : 'text-gray-400'
-            }`}>{studentCount} x ₺{unitPrice.toLocaleString('tr-TR')}</div>
             <div className={`text-2xl font-bold transition-colors ${
               selected === 'full' ? 'text-indigo-700' : 'text-gray-800'
-            }`}>₺{fullTotal.toLocaleString('tr-TR')}</div>
+            }`}>₺{fullAmount.toLocaleString('tr-TR')}</div>
             <div className={`text-xs mt-1 transition-colors ${
               selected === 'full' ? 'text-indigo-500' : 'text-gray-400'
-            }`}>{studentCount} öğrencinin tamamına destek</div>
+            }`}>{isDynamic ? 'Kalan tutarın tamamı' : `${studentCount} öğrencinin tamamına destek`}</div>
           </div>
         </button>
 
@@ -134,15 +172,12 @@ export default function StudentAmountSelector({ unitPrice, studentCount, onSelec
             <div className={`text-xs font-semibold uppercase tracking-wider mb-1.5 transition-colors ${
               selected === 'half' ? 'text-blue-600' : 'text-gray-400 group-hover:text-blue-500'
             }`}>Yarısını Üstlen</div>
-            <div className={`text-sm font-medium mb-1 transition-colors ${
-              selected === 'half' ? 'text-blue-500' : 'text-gray-400'
-            }`}>{studentCount} x ₺{halfUnitPrice.toLocaleString('tr-TR')}</div>
             <div className={`text-2xl font-bold transition-colors ${
               selected === 'half' ? 'text-blue-700' : 'text-gray-800'
-            }`}>₺{halfTotal.toLocaleString('tr-TR')}</div>
+            }`}>₺{halfAmount.toLocaleString('tr-TR')}</div>
             <div className={`text-xs mt-1 transition-colors ${
               selected === 'half' ? 'text-blue-500' : 'text-gray-400'
-            }`}>{studentCount} öğrencinin yarısına katkı</div>
+            }`}>{isDynamic ? 'Kalan tutarın yarısı' : `${studentCount} öğrencinin yarısına katkı`}</div>
           </div>
         </button>
 
@@ -198,8 +233,8 @@ export default function StudentAmountSelector({ unitPrice, studentCount, onSelec
                 onChange={(e) => handleCustomChange(e.target.value)}
                 placeholder="1"
                 min={1}
-                max={studentCount}
-                aria-label={`Desteklenecek öğrenci sayısı, 1 ile ${studentCount} arası`}
+                max={maxCustomStudents}
+                aria-label={`Desteklenecek öğrenci sayısı, 1 ile ${maxCustomStudents} arası`}
                 className="w-full pl-20 pr-14 py-4 rounded-[13px] text-lg font-semibold text-gray-800 placeholder:text-gray-300 placeholder:font-normal focus:outline-none bg-transparent"
               />
               {isCustomValid && (
@@ -212,9 +247,9 @@ export default function StudentAmountSelector({ unitPrice, studentCount, onSelec
             </div>
           </div>
 
-          {Number(customStudentCount) > studentCount && (
+          {Number(customStudentCount) > maxCustomStudents && (
             <p className="text-red-500 text-sm mt-2 ml-1">
-              En fazla {studentCount} öğrenci seçebilirsiniz
+              En fazla {maxCustomStudents} öğrenci seçebilirsiniz
             </p>
           )}
           {Number(customStudentCount) < 1 && customStudentCount !== '' && (

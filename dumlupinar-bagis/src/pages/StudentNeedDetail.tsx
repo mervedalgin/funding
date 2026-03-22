@@ -33,7 +33,8 @@ export default function StudentNeedDetail() {
 
       if (data) {
         setItem(data as StudentNeed)
-        setSelectedAmount(data.student_count * data.price)
+        const remaining = data.target_amount > 0 ? Math.max(0, data.target_amount - data.collected_amount) : data.student_count * data.price
+        setSelectedAmount(remaining)
       }
       setLoading(false)
     }
@@ -165,6 +166,8 @@ export default function StudentNeedDetail() {
                 <StudentAmountSelector
                   unitPrice={item.price}
                   studentCount={item.student_count}
+                  targetAmount={item.target_amount}
+                  collectedAmount={item.collected_amount}
                   onSelect={handleAmountSelect}
                 />
                 <hr className="border-gray-100" />

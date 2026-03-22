@@ -32,7 +32,8 @@ export default function ItemDetail() {
 
       if (data) {
         setItem(data as DonationItem)
-        setSelectedAmount(data.price)
+        const remaining = data.target_amount > 0 ? Math.max(0, data.target_amount - data.collected_amount) : data.price
+        setSelectedAmount(remaining)
       }
       setLoading(false)
     }
@@ -158,6 +159,8 @@ export default function ItemDetail() {
                 <AmountSelector
                   price={item.price}
                   customAmountMin={item.custom_amount_min}
+                  targetAmount={item.target_amount}
+                  collectedAmount={item.collected_amount}
                   onSelect={handleAmountSelect}
                 />
 
