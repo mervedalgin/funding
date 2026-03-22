@@ -157,7 +157,7 @@ export default function PaymentMethods({ channels, paymentRef, selectedAmount, i
                     }
                     const { error } = await supabase.from(table).insert(insertData)
                     if (error) {
-                      console.error('Bağış kaydı oluşturulamadı:', error.message, error.details)
+                      console.error('Bağış kaydı oluşturulamadı:', error.message)
                     }
                   } catch (err) {
                     console.error('Bağış kaydı hatası:', err)

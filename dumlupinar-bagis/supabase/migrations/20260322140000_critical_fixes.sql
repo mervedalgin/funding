@@ -83,24 +83,16 @@ create trigger trg_decrement_student_donation_stats
   after update or delete on public.student_donations
   for each row execute function decrement_student_donation_stats();
 
--- 3. site_settings RLS düzeltmesi: sadece admin yazabilir
-drop policy if exists "Authenticated users can manage site settings" on public.site_settings;
-
-create policy "Admin can manage site settings"
-  on public.site_settings for insert
-  to authenticated
-  with check (auth.jwt() ->> 'email' = '741604birecik@gmail.com');
-
-create policy "Admin can update site settings"
-  on public.site_settings for update
-  to authenticated
-  using (auth.jwt() ->> 'email' = '741604birecik@gmail.com')
-  with check (auth.jwt() ->> 'email' = '741604birecik@gmail.com');
-
-create policy "Admin can delete site settings"
-  on public.site_settings for delete
-  to authenticated
-  using (auth.jwt() ->> 'email' = '741604birecik@gmail.com');
+-- 3. site_settings RLS düzeltmesi: sadece admin yazabilir (tablo varsa)
+do $$
+begin
+  if exists (select 1 from information_schema.tables where table_schema = 'public' and table_name = 'site_settings') then
+    execute 'drop policy if exists "Authenticated users can manage site settings" on public.site_settings';
+    execute 'create policy "Admin can manage site settings" on public.site_settings for insert to authenticated with check (auth.jwt() ->> ''email'' = ''741604birecik@gmail.com'')';
+    execute 'create policy "Admin can update site settings" on public.site_settings for update to authenticated using (auth.jwt() ->> ''email'' = ''741604birecik@gmail.com'') with check (auth.jwt() ->> ''email'' = ''741604birecik@gmail.com'')';
+    execute 'create policy "Admin can delete site settings" on public.site_settings for delete to authenticated using (auth.jwt() ->> ''email'' = ''741604birecik@gmail.com'')';
+  end if;
+end $$;
 
 -- 4. student_donations için audit trigger
 create or replace function audit_student_donations()
