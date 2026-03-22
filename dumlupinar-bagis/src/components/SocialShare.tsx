@@ -5,9 +5,10 @@ interface SocialShareProps {
   url: string
   title: string
   description?: string
+  heading?: string
 }
 
-export default function SocialShare({ url, title, description }: SocialShareProps) {
+export default function SocialShare({ url, title, description, heading = 'Bu Hikayeyi Paylaş' }: SocialShareProps) {
   const [copied, setCopied] = useState<string | null>(null)
   const encodedUrl = encodeURIComponent(url)
   const encodedTitle = encodeURIComponent(title)
@@ -44,7 +45,7 @@ export default function SocialShare({ url, title, description }: SocialShareProp
       icon: Twitter,
       color: 'hover:bg-black/10 hover:text-black',
       bgColor: 'bg-black',
-      action: () => window.open(`https://twitter.com/intent/tweet?url=${encodedUrl}&text=${encodedTitle}`, '_blank', 'width=600,height=400'),
+      action: () => window.open(`https://x.com/intent/tweet?url=${encodedUrl}&text=${encodedTitle}`, '_blank', 'width=600,height=400'),
     },
     {
       name: 'WhatsApp',
@@ -75,7 +76,7 @@ export default function SocialShare({ url, title, description }: SocialShareProp
     <div className="space-y-4">
       <div className="flex items-center gap-2">
         <Share2 className="w-5 h-5 text-gray-400" />
-        <h3 className="text-sm font-semibold text-gray-700">Bu Hikayeyi Paylaş</h3>
+        <h3 className="text-sm font-semibold text-gray-700">{heading}</h3>
       </div>
 
       <div className="flex flex-wrap gap-3">

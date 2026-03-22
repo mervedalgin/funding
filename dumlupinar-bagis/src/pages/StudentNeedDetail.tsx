@@ -11,6 +11,7 @@ import StudentAmountSelector from '../components/StudentAmountSelector'
 import PaymentMethods from '../components/PaymentMethods'
 import ImpactBadge from '../components/ImpactBadge'
 import ProgressBar from '../components/ProgressBar'
+import SocialShare from '../components/SocialShare'
 import { getOptimizedImageUrl } from '../lib/imageUtils'
 import { isSecureImageUrl } from '../lib/validation'
 
@@ -191,6 +192,14 @@ export default function StudentNeedDetail() {
                 </Link>
               </div>
             )}
+
+            <hr className="border-gray-100" />
+            <SocialShare
+              url={window.location.href}
+              title={`Dumlupınar İlkokulu'nun '${item.title}' ihtiyacına destek ol!`}
+              description={item.description ?? `${item.title} için bağış yapın.`}
+              heading={item.status === 'completed' ? 'Bu başarıyı paylaş' : 'Bu ihtiyacı paylaş'}
+            />
           </div>
         </div>
       </div>
