@@ -9,7 +9,7 @@ export default function TrustBanner() {
       </div>
       <div className="hidden sm:block w-px h-6 bg-gray-200" />
       <p className="text-sm text-gray-600 text-center sm:text-left">
-        Dumlupınar İlkokulu ve Ortaokulu — Birecik, Şanlıurfa
+        Dumlupınar İlkokulu — Birecik, Şanlıurfa
       </p>
       <div className="hidden sm:block w-px h-6 bg-gray-200" />
       <p className="text-xs text-gray-500 flex items-center gap-1">

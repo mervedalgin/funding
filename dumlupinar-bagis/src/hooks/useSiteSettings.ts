@@ -61,8 +61,8 @@ export interface SiteSettings {
 const DEFAULT_SETTINGS: SiteSettings = {
   general: {
     site_name: 'Dumlupınar İlkokulu Bağış Platformu',
-    site_description: 'Dumlupınar İlkokulu ve Ortaokulu öğrencileri için bağış toplama platformu',
-    contact_email: 'bagis@dumlupinar.edu.tr',
+    site_description: 'Dumlupınar İlkokulu öğrencileri için bağış toplama platformu',
+    contact_email: '741585@meb.k12.tr',
     contact_phone: '',
     address: '',
     logo_url: '',
@@ -72,7 +72,7 @@ const DEFAULT_SETTINGS: SiteSettings = {
     social_facebook: '',
     social_youtube: '',
     footer_text: '',
-    copyright_text: 'Dumlupınar İlkokulu ve Ortaokulu — Birecik, Şanlıurfa',
+    copyright_text: 'Dumlupınar İlkokulu — Birecik, Şanlıurfa',
   },
   donation: {
     min_amount: 10,
@@ -98,7 +98,7 @@ const DEFAULT_SETTINGS: SiteSettings = {
   },
   seo: {
     meta_title: 'Dumlupınar İlkokulu — Bağış Sayfası',
-    meta_description: 'Dumlupınar İlkokulu ve Ortaokulu bağış sayfası — Birecik, Şanlıurfa. Okulumuzun ihtiyaçları için destek olun.',
+    meta_description: 'Dumlupınar İlkokulu bağış sayfası — Birecik, Şanlıurfa. Okulumuzun ihtiyaçları için destek olun.',
     og_image_url: '',
     plausible_domain: 'dumlupinar-bagis.vercel.app',
     auto_sitemap: true,

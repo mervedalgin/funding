@@ -82,7 +82,7 @@ export default function StoryDetail() {
           "image": story.cover_image_url,
           "datePublished": story.created_at,
           "dateModified": story.updated_at,
-          "publisher": { "@type": "EducationalOrganization", "name": "Dumlupınar İlkokulu ve Ortaokulu" },
+          "publisher": { "@type": "EducationalOrganization", "name": "Dumlupınar İlkokulu" },
         })}</script>
       </Helmet>
 
@@ -241,7 +241,7 @@ export default function StoryDetail() {
       {/* Footer */}
       <footer className="bg-white border-t border-gray-100 mt-auto">
         <div className="max-w-6xl mx-auto px-4 py-8 text-center">
-          <p className="text-sm text-gray-500">Dumlupınar İlkokulu ve Ortaokulu — Birecik, Şanlıurfa</p>
+          <p className="text-sm text-gray-500">Dumlupınar İlkokulu — Birecik, Şanlıurfa</p>
         </div>
       </footer>
     </div>

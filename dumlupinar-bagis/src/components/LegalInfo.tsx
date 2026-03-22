@@ -23,22 +23,22 @@ export default function LegalInfo() {
           <dl className="space-y-2 text-sm">
             <div>
               <dt className="text-gray-500">Kurum Adı</dt>
-              <dd className="text-gray-800 font-medium">Dumlupınar İlkokulu ve Ortaokulu</dd>
+              <dd className="text-gray-800 font-medium">Dumlupınar İlkokulu</dd>
             </div>
             <div>
               <dt className="text-gray-500">MEB Kurum Kodu</dt>
               <dd className="text-gray-800 font-medium font-mono">
-                63-32-038
+                741585
               </dd>
             </div>
             <div className="flex items-start gap-2">
               <MapPin className="w-4 h-4 text-gray-500 shrink-0 mt-0.5" />
-              <dd className="text-gray-800">Dumlupınar Mahallesi, Birecik, Şanlıurfa</dd>
+              <dd className="text-gray-800">Merkez Mah. Kale Altı Cad. No: 1, Birecik, Şanlıurfa</dd>
             </div>
             <div className="flex items-start gap-2">
               <Phone className="w-4 h-4 text-gray-500 shrink-0 mt-0.5" />
               <dd className="text-gray-800">
-                (0414) 652 00 00
+                (0414) 652 12 52
               </dd>
             </div>
           </dl>
@@ -58,7 +58,7 @@ export default function LegalInfo() {
             <div>
               <dt className="text-gray-500">Vergi Numarası</dt>
               <dd className="text-gray-800 font-medium font-mono">
-                1234567890
+                1770237479
               </dd>
             </div>
             <div>

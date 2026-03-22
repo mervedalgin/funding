@@ -92,15 +92,15 @@ export default function Home() {
         <script type="application/ld+json">{JSON.stringify({
           "@context": "https://schema.org",
           "@type": "EducationalOrganization",
-          "name": "Dumlupınar İlkokulu ve Ortaokulu",
-          "description": "Birecik, Şanlıurfa'da bulunan Dumlupınar İlkokulu ve Ortaokulu bağış platformu",
+          "name": "Dumlupınar İlkokulu",
+          "description": "Birecik, Şanlıurfa'da bulunan Dumlupınar İlkokulu bağış platformu",
           "address": {
             "@type": "PostalAddress",
             "addressLocality": "Birecik",
             "addressRegion": "Şanlıurfa",
             "addressCountry": "TR"
           },
-          "telephone": "(0414) 652 00 00",
+          "telephone": "(0414) 652 12 52",
           "url": window.location.origin
         })}</script>
       </Helmet>
@@ -266,8 +266,8 @@ export default function Home() {
             <div>
               <h4 className="font-semibold text-gray-800 mb-3">İletişim</h4>
               <div className="space-y-2 text-sm text-gray-500">
-                <p>Dumlupınar Mahallesi, Birecik, Şanlıurfa</p>
-                <p>(0414) 652 00 00</p>
+                <p>Merkez Mah. Kale Altı Cad. No: 1, Birecik, Şanlıurfa</p>
+                <p>(0414) 652 12 52</p>
               </div>
             </div>
           </div>
@@ -275,7 +275,7 @@ export default function Home() {
             <p className="text-sm text-gray-600 italic">
               "Her bağış, bir öğrencinin geleceğine yapılan yatırımdır."
             </p>
-            <p className="text-sm text-gray-500">Dumlupınar İlkokulu ve Ortaokulu — Birecik, Şanlıurfa</p>
+            <p className="text-sm text-gray-500">Dumlupınar İlkokulu — Birecik, Şanlıurfa</p>
           </div>
         </div>
       </footer>

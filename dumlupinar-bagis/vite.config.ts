@@ -13,7 +13,7 @@ export default defineConfig({
       manifest: {
         name: 'Dumlupınar İlkokulu Bağış Platformu',
         short_name: 'Dumlupınar Bağış',
-        description: 'Dumlupınar İlkokulu ve Ortaokulu bağış sayfası — Birecik, Şanlıurfa',
+        description: 'Dumlupınar İlkokulu bağış sayfası — Birecik, Şanlıurfa',
         theme_color: '#0d9488',
         background_color: '#f9fafb',
         display: 'standalone',

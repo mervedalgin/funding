@@ -82,7 +82,7 @@ export default function StudentNeedDetail() {
           "description": item.description,
           "recipient": {
             "@type": "EducationalOrganization",
-            "name": "Dumlupınar İlkokulu ve Ortaokulu"
+            "name": "Dumlupınar İlkokulu"
           },
           "price": item.price,
           "priceCurrency": "TRY"

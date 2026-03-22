@@ -76,7 +76,7 @@ export default function Contact() {
                 </div>
                 <div>
                   <h3 className="font-semibold text-gray-800 text-sm">{t('contact.address')}</h3>
-                  <p className="text-gray-600 text-sm mt-1">Dumlupınar Mahallesi, Birecik, Şanlıurfa</p>
+                  <p className="text-gray-600 text-sm mt-1">Merkez Mah. Kale Altı Cad. No: 1, Birecik, Şanlıurfa</p>
                 </div>
               </div>
 
@@ -86,7 +86,7 @@ export default function Contact() {
                 </div>
                 <div>
                   <h3 className="font-semibold text-gray-800 text-sm">{t('contact.phone')}</h3>
-                  <p className="text-gray-600 text-sm mt-1">(0414) 652 00 00</p>
+                  <p className="text-gray-600 text-sm mt-1">(0414) 652 12 52</p>
                 </div>
               </div>
 
@@ -96,7 +96,7 @@ export default function Contact() {
                 </div>
                 <div>
                   <h3 className="font-semibold text-gray-800 text-sm">{t('contact.email')}</h3>
-                  <p className="text-gray-600 text-sm mt-1">info@dumlupinarilkokulu.edu.tr</p>
+                  <p className="text-gray-600 text-sm mt-1">741585@meb.k12.tr</p>
                 </div>
               </div>
             </div>
