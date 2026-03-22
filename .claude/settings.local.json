@@ -2,14 +2,30 @@
   "env": {
     "CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS": "1"
   },
-
   "permissions": {
     "allow": [
       "Bash(npm create:*)",
       "Bash(npm install:*)",
       "Bash(npx tsc:*)",
       "Bash(npm run:*)",
-      "Bash(node -e \":*)"
+      "Bash(node -e \":*)",
+      "Bash(npx supabase:*)",
+      "Bash(curl -s -X POST \"https://pvjtpqdrregydavtdkhf.supabase.co/auth/v1/token?grant_type=password\" -H \"apikey: sb_publishable_8QaoZvAiuIWxfiL0_NABbg_RWj5q_ft\" -H \"Content-Type: application/json\" -d '{\"\"\"\"email\"\"\"\":\"\"\"\"bozkurt@dumlupinar.edu.tr\"\"\"\",\"\"\"\"password\"\"\"\":\"\"\"\"dumlupınar2025\"\"\"\"}')",
+      "Bash(curl -s -X POST \"https://pvjtpqdrregydavtdkhf.supabase.co/auth/v1/signup\" -H \"apikey: sb_publishable_8QaoZvAiuIWxfiL0_NABbg_RWj5q_ft\" -H \"Content-Type: application/json\" -d '{\"\"\"\"email\"\"\"\":\"\"\"\"bozkurt@dumlupinar.edu.tr\"\"\"\",\"\"\"\"password\"\"\"\":\"\"\"\"dumlupinar2025\"\"\"\"}')",
+      "Bash(curl -s -X POST 'https://pvjtpqdrregydavtdkhf.supabase.co/auth/v1/token?grant_type=password' -H 'apikey: sb_publishable_8QaoZvAiuIWxfiL0_NABbg_RWj5q_ft' -H 'Content-Type: application/json' -d '{\"\"\"\"email\"\"\"\":\"\"\"\"bozkurt@dumlupinar.edu.tr\"\"\"\",\"\"\"\"password\"\"\"\":\"\"\"\"dumlupinar2025\"\"\"\"}')",
+      "Bash(wsl:*)",
+      "Bash(find A:/funding/dumlupinar-bagis/src -type f -name *.ts -o -name *.tsx -o -name *.css)",
+      "Bash(npx vite:*)",
+      "Bash(npm ls:*)",
+      "Bash(npm uninstall:*)",
+      "Bash(ls -1 /A/funding/dumlupinar-bagis/src/components/*.tsx)",
+      "Bash(xargs -I {} basename {})",
+      "Bash(ls -1 /A/funding/dumlupinar-bagis/src/pages/*.tsx)",
+      "Bash(ls -1 /A/funding/dumlupinar-bagis/src/hooks/*.ts)",
+      "Bash(npx vitest:*)",
+      "Bash(npx sharp-cli:*)",
+      "Bash(mv logo.png logo-original.png)",
+      "Bash(mv logo-small.png logo.png)"
     ]
   }
 }
