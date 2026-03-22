@@ -17,10 +17,6 @@ const avatarGradients = [
   'from-emerald-400 to-teal-600', 'from-orange-400 to-amber-600',
 ]
 
-function getInitials(name: string): string {
-  return name.split(' ').map(w => w[0]).join('').toUpperCase().slice(0, 2)
-}
-
 export default function Donors() {
   const { t } = useTranslation()
   const { fetchAllPublicDonors } = useDonations()
@@ -144,7 +140,7 @@ export default function Donors() {
               >
                 <div className="flex items-center gap-3 mb-3">
                   <div className={`w-11 h-11 rounded-full bg-gradient-to-br ${avatarGradients[index % avatarGradients.length]} flex items-center justify-center text-white text-sm font-bold shrink-0`}>
-                    {getInitials(donor.donor_name)}
+                    <Heart className="w-5 h-5 text-white fill-white" />
                   </div>
                   <div className="min-w-0">
                     <p className="font-semibold text-gray-800 truncate">{donor.donor_name}</p>
@@ -157,7 +153,7 @@ export default function Donors() {
                     <span className={`text-[10px] font-semibold uppercase px-1.5 py-0.5 rounded-md ${
                       donor.type === 'student' ? 'bg-indigo-50 text-indigo-600' : 'bg-primary-50 text-primary-600'
                     }`}>
-                      {donor.type === 'student' ? 'Öğrenci' : 'Okul'}
+                      {donor.type === 'student' ? 'Öğrenci Bağışı' : 'Okul Bağışı'}
                     </span>
                   </div>
                 </div>
@@ -179,13 +175,13 @@ export default function Donors() {
                 <X className="w-5 h-5" />
               </button>
               <div className={`w-16 h-16 rounded-full bg-gradient-to-br ${avatarGradients[filtered.findIndex(d => d === selectedDonor) % avatarGradients.length]} flex items-center justify-center text-white text-xl font-bold mx-auto mb-3 ring-4 ring-white/30`}>
-                {getInitials(selectedDonor.donor_name)}
+                <Heart className="w-7 h-7 text-white fill-white" />
               </div>
               <h3 className="text-xl font-bold" style={{ fontFamily: 'var(--font-heading)' }}>{selectedDonor.donor_name}</h3>
               <span className={`inline-block mt-2 text-xs font-semibold uppercase px-2.5 py-1 rounded-full ${
                 selectedDonor.type === 'student' ? 'bg-indigo-400/30 text-indigo-100' : 'bg-white/20 text-white'
               }`}>
-                {selectedDonor.type === 'student' ? 'Öğrenci İhtiyacı' : 'Okul İhtiyacı'}
+                {selectedDonor.type === 'student' ? 'Öğrenci Bağışı' : 'Okul Bağışı'}
               </span>
             </div>
 
