@@ -1,7 +1,8 @@
 import { useState } from 'react'
-import { Building2, Globe, Smartphone, Copy, Check, ExternalLink, CircleCheckBig, MessageCircle, User, CreditCard, Landmark } from 'lucide-react'
+import { Building2, Globe, Smartphone, Copy, Check, ExternalLink, CircleCheckBig, MessageCircle, User, CreditCard, Landmark, Loader2 } from 'lucide-react'
 import type { PaymentChannel } from '../types/donation'
 import { isValidHttpsUrl } from '../lib/validation'
+import { supabase } from '../lib/supabaseClient'
 import OnlinePaymentForm from './OnlinePaymentForm'
 import TransferDescription from './TransferDescription'
 import type { DonationType } from './TransferDescription'
@@ -30,6 +31,7 @@ export default function PaymentMethods({ channels, paymentRef, selectedAmount, i
   const [copiedId, setCopiedId] = useState<string | null>(null)
   const [ibanCopied, setIbanCopied] = useState(false)
   const [transferDone, setTransferDone] = useState(false)
+  const [submitting, setSubmitting] = useState(false)
   const [donorName, setDonorName] = useState('')
 
   const copyToClipboard = async (text: string, id: string) => {
@@ -137,10 +139,29 @@ export default function PaymentMethods({ channels, paymentRef, selectedAmount, i
                 Bankanızdan havale yaparken açıklama kısmına aşağıdaki hazır metni kopyalayıp yapıştırmayı unutmayın.
               </p>
               <button
-                onClick={() => setTransferDone(true)}
-                className="mt-3 bg-primary-500 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-primary-600 transition-colors min-h-[44px]"
+                onClick={async () => {
+                  setSubmitting(true)
+                  try {
+                    const table = donationType === 'student' ? 'student_donations' : 'donations'
+                    const fkField = donationType === 'student' ? 'student_need_id' : 'item_id'
+                    await supabase.from(table).insert({
+                      [fkField]: itemId || null,
+                      donor_name: donorName || null,
+                      amount: selectedAmount,
+                      payment_method: 'bank_transfer',
+                      payment_ref: paymentRef || null,
+                      status: 'pending',
+                    })
+                  } catch {
+                    // Kayıt oluşturulamasa bile kullanıcıya teşekkür göster
+                  }
+                  setSubmitting(false)
+                  setTransferDone(true)
+                }}
+                disabled={submitting}
+                className="mt-3 bg-primary-500 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-primary-600 transition-colors min-h-[44px] disabled:opacity-50 inline-flex items-center gap-2"
               >
-                Havale Yaptım
+                {submitting ? <><Loader2 className="w-4 h-4 animate-spin" /> Kaydediliyor...</> : 'Havale Yaptım'}
               </button>
             </div>
           </div>
