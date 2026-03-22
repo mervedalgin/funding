@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom'
 import { Helmet } from 'react-helmet-async'
 import { Heart, BookOpen, MousePointer, Banknote, CheckCircle, ArrowRight } from 'lucide-react'
+import { SITE_URL } from '../lib/constants'
 import { useDonationItems } from '../hooks/useDonationItems'
 import { useStudentNeeds } from '../hooks/useStudentNeeds'
 import type { DonationItem, StudentNeed } from '../types/donation'
@@ -84,11 +85,12 @@ export default function Home() {
         <meta property="og:title" content="Dumlupınar İlkokulu - Bağış Sayfası" />
         <meta property="og:description" content="Birecik, Şanlıurfa Dumlupınar İlkokulu ihtiyaç listesi ve bağış sayfası. Okulumuzun ihtiyaçlarına destek olun." />
         <meta property="og:type" content="website" />
-        <meta property="og:image" content="/og-image.jpg" />
+        <meta property="og:image" content="/logo.png" />
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content="Dumlupınar İlkokulu - Bağış Sayfası" />
         <meta name="twitter:description" content="Birecik, Şanlıurfa Dumlupınar İlkokulu ihtiyaç listesi ve bağış sayfası." />
-        <meta name="twitter:image" content="/og-image.jpg" />
+        <meta name="twitter:image" content="/logo.png" />
+        <link rel="canonical" href={SITE_URL} />
         <script type="application/ld+json">{JSON.stringify({
           "@context": "https://schema.org",
           "@type": "EducationalOrganization",

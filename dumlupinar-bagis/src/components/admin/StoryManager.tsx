@@ -111,7 +111,7 @@ export default function StoryManager() {
 
                 {/* Thumbnail */}
                 {item.cover_image_url ? (
-                  <img src={item.cover_image_url} alt="" className="shrink-0 w-16 h-12 rounded-lg object-cover border border-gray-100" />
+                  <img src={item.cover_image_url} alt={item.title} className="shrink-0 w-16 h-12 rounded-lg object-cover border border-gray-100" />
                 ) : (
                   <div className="shrink-0 w-16 h-12 rounded-lg bg-gray-100 flex items-center justify-center">
                     <BookHeart className="w-5 h-5 text-gray-300" />

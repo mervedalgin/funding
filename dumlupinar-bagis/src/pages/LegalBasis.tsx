@@ -7,6 +7,8 @@ import {
 import type { LucideIcon } from 'lucide-react'
 import Navbar from '../components/Navbar'
 import { useLegalBasis } from '../hooks/useLegalBasis'
+import { sanitizeHtml } from '../lib/sanitize'
+import { SITE_URL } from '../lib/constants'
 
 const ICON_MAP: Record<string, LucideIcon> = {
   'scale': Scale,
@@ -29,6 +31,7 @@ export default function LegalBasis() {
       <Helmet>
         <title>Yasal Dayanak - Dumlupınar İlkokulu</title>
         <meta name="description" content="Dumlupınar İlkokulu bağış toplama faaliyetlerinin yasal dayanakları." />
+        <link rel="canonical" href={`${SITE_URL}/yasal-dayanak`} />
       </Helmet>
 
       <Navbar />
@@ -95,7 +98,7 @@ export default function LegalBasis() {
                           prose-a:text-primary-600 prose-a:underline
                           prose-ul:list-disc prose-ol:list-decimal
                           prose-li:text-gray-600"
-                        dangerouslySetInnerHTML={{ __html: item.content }}
+                        dangerouslySetInnerHTML={{ __html: sanitizeHtml(item.content) }}
                       />
                       {item.url && (
                         <a

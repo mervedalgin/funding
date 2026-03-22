@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import { Helmet } from 'react-helmet-async'
 import { BookHeart, Heart, ArrowRight, Calendar, TrendingUp } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
+import { SITE_URL } from '../lib/constants'
 import Navbar from '../components/Navbar'
 import { useStories, estimateReadingTime } from '../hooks/useStories'
 import { formatCurrency } from '../lib/formatters'
@@ -31,6 +32,7 @@ export default function StoriesPage() {
         <meta name="description" content={t('stories.meta_desc')} />
         <meta property="og:title" content={`${t('stories.title')} - Dumlupınar İlkokulu`} />
         <meta property="og:type" content="website" />
+        <link rel="canonical" href={`${SITE_URL}/bagis-hikayeleri`} />
       </Helmet>
 
       <Navbar />

@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import { Helmet } from 'react-helmet-async'
 import { MapPin, Phone, Mail, Send, ArrowLeft, Building2 } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
+import { SITE_URL } from '../lib/constants'
 import Navbar from '../components/Navbar'
 
 export default function Contact() {
@@ -21,6 +22,7 @@ export default function Contact() {
       <Helmet>
         <title>{t('contact.title')} - Dumlupınar İlkokulu</title>
         <meta name="description" content={t('contact.meta_desc')} />
+        <link rel="canonical" href={`${SITE_URL}/iletisim`} />
       </Helmet>
 
       <Navbar />

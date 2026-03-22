@@ -58,8 +58,18 @@ export default function OnlinePaymentForm({ itemId, amount, itemTitle, donationT
         return
       }
 
-      // Redirect to payment gateway
-      window.location.href = data.checkout_url
+      // Validate and redirect to payment gateway
+      try {
+        const checkoutUrl = new URL(data.checkout_url)
+        if (checkoutUrl.protocol !== 'https:') {
+          setError('Geçersiz ödeme bağlantısı.')
+          return
+        }
+        window.location.href = data.checkout_url
+      } catch {
+        setError('Geçersiz ödeme bağlantısı.')
+        return
+      }
     } catch {
       setError('Bağlantı hatası. Lütfen tekrar deneyin.')
     } finally {

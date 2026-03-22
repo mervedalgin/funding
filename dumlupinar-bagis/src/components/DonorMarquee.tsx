@@ -24,9 +24,25 @@ export default function DonorMarquee() {
   const [loaded, setLoaded] = useState(false)
 
   useEffect(() => {
+    const CACHE_KEY = 'donor_marquee_cache'
+    const CACHE_TTL = 5 * 60 * 1000
+
+    const cached = localStorage.getItem(CACHE_KEY)
+    if (cached) {
+      try {
+        const { data, timestamp } = JSON.parse(cached)
+        if (Date.now() - timestamp < CACHE_TTL && Array.isArray(data) && data.length > 0) {
+          setDonors(data)
+          setLoaded(true)
+          return
+        }
+      } catch { /* ignore corrupt cache */ }
+    }
+
     fetchPublicDonorNames().then(data => {
       setDonors(data)
       setLoaded(true)
+      localStorage.setItem(CACHE_KEY, JSON.stringify({ data, timestamp: Date.now() }))
     }).catch(() => setLoaded(true))
   }, [fetchPublicDonorNames])
 

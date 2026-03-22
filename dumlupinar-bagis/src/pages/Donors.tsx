@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import { Helmet } from 'react-helmet-async'
 import { Heart, Users, X, Calendar, Gift, Loader2, Package, GraduationCap } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
+import { SITE_URL } from '../lib/constants'
 import Navbar from '../components/Navbar'
 import { useDonations } from '../hooks/useDonations'
 import type { PublicDonorUnified } from '../types/donation'
@@ -43,6 +44,7 @@ export default function Donors() {
       <Helmet>
         <title>{t('donors.title')} - Dumlupınar İlkokulu</title>
         <meta name="description" content={t('donors.meta_desc')} />
+        <link rel="canonical" href={`${SITE_URL}/bagiscilarimiz`} />
       </Helmet>
 
       <Navbar />

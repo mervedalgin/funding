@@ -2,6 +2,7 @@ import { useState, useMemo } from 'react'
 import { Helmet } from 'react-helmet-async'
 import { Link } from 'react-router-dom'
 import { HelpCircle, ChevronDown, MessageCircle, Search, BookOpen } from 'lucide-react'
+import { SITE_URL } from '../lib/constants'
 import Navbar from '../components/Navbar'
 import { useFaq } from '../hooks/useFaq'
 
@@ -99,6 +100,7 @@ export default function FAQ() {
       <Helmet>
         <title>Sıkça Sorulan Sorular - Dumlupınar İlkokulu</title>
         <meta name="description" content="Dumlupınar İlkokulu bağış platformu hakkında sıkça sorulan sorular ve cevapları." />
+        <link rel="canonical" href={`${SITE_URL}/sss`} />
       </Helmet>
 
       <Navbar />

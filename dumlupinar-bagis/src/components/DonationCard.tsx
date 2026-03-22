@@ -1,3 +1,4 @@
+import { memo } from 'react'
 import { Link } from 'react-router-dom'
 import { Package, TrendingUp, Sparkles, Heart, Users, ArrowRight, CheckCircle } from 'lucide-react'
 import type { DonationItem } from '../types/donation'
@@ -8,7 +9,7 @@ interface DonationCardProps {
   item: DonationItem
 }
 
-export default function DonationCard({ item }: DonationCardProps) {
+function DonationCard({ item }: DonationCardProps) {
   const isCompleted = item.status === 'completed'
   const progressPercent = item.target_amount > 0 ? Math.min((item.collected_amount / item.target_amount) * 100, 100) : 0
   const isNearGoal = progressPercent >= 80 && progressPercent < 100
@@ -24,6 +25,8 @@ export default function DonationCard({ item }: DonationCardProps) {
         {item.image_url && isSecureImageUrl(item.image_url) ? (
           <img
             src={getOptimizedImageUrl(item.image_url, 400, 300) ?? item.image_url}
+            srcSet={item.image_url.includes('supabase.co/storage') ? `${getOptimizedImageUrl(item.image_url, 400, 300)} 400w, ${getOptimizedImageUrl(item.image_url, 800, 600)} 800w` : undefined}
+            sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
             alt={item.title}
             loading="lazy"
             width={400}
@@ -138,3 +141,5 @@ export default function DonationCard({ item }: DonationCardProps) {
     </Link>
   )
 }
+
+export default memo(DonationCard)

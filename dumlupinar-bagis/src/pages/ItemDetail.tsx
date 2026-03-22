@@ -12,6 +12,7 @@ import ImpactBadge from '../components/ImpactBadge'
 import ProgressBar from '../components/ProgressBar'
 import SocialShare from '../components/SocialShare'
 import { getOptimizedImageUrl } from '../lib/imageUtils'
+import { SITE_URL } from '../lib/constants'
 import { isSecureImageUrl } from '../lib/validation'
 
 export default function ItemDetail() {
@@ -75,6 +76,7 @@ export default function ItemDetail() {
         <meta property="og:type" content="article" />
         {item.image_url && <meta property="og:image" content={item.image_url} />}
         <meta name="twitter:card" content="summary_large_image" />
+        <link rel="canonical" href={`${SITE_URL}/ihtiyac/${slug}`} />
         <meta name="twitter:title" content={`${item.title} - Dumlupınar İlkokulu Bağış`} />
         <meta name="twitter:description" content={item.description ?? `${item.title} için bağış yapın.`} />
         <script type="application/ld+json">{JSON.stringify({

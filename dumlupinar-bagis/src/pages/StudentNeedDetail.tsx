@@ -13,6 +13,7 @@ import ImpactBadge from '../components/ImpactBadge'
 import ProgressBar from '../components/ProgressBar'
 import SocialShare from '../components/SocialShare'
 import { getOptimizedImageUrl } from '../lib/imageUtils'
+import { SITE_URL } from '../lib/constants'
 import { isSecureImageUrl } from '../lib/validation'
 
 export default function StudentNeedDetail() {
@@ -76,6 +77,7 @@ export default function StudentNeedDetail() {
         <meta property="og:type" content="article" />
         {item.image_url && <meta property="og:image" content={item.image_url} />}
         <meta name="twitter:card" content="summary_large_image" />
+        <link rel="canonical" href={`${SITE_URL}/ogrenci-ihtiyaci/${slug}`} />
         <script type="application/ld+json">{JSON.stringify({
           "@context": "https://schema.org",
           "@type": "DonateAction",

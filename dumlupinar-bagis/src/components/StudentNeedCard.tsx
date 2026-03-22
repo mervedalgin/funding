@@ -1,3 +1,4 @@
+import { memo } from 'react'
 import { Link } from 'react-router-dom'
 import { GraduationCap, TrendingUp, Sparkles, Heart, Users, ArrowRight, CheckCircle } from 'lucide-react'
 import type { StudentNeed } from '../types/donation'
@@ -8,7 +9,7 @@ interface StudentNeedCardProps {
   item: StudentNeed
 }
 
-export default function StudentNeedCard({ item }: StudentNeedCardProps) {
+function StudentNeedCard({ item }: StudentNeedCardProps) {
   const isCompleted = item.status === 'completed'
   const totalNeeded = item.student_count * item.price
   const effectiveTarget = item.target_amount > 0 ? item.target_amount : totalNeeded
@@ -26,6 +27,8 @@ export default function StudentNeedCard({ item }: StudentNeedCardProps) {
         {item.image_url && isSecureImageUrl(item.image_url) ? (
           <img
             src={getOptimizedImageUrl(item.image_url, 400, 300) ?? item.image_url}
+            srcSet={item.image_url.includes('supabase.co/storage') ? `${getOptimizedImageUrl(item.image_url, 400, 300)} 400w, ${getOptimizedImageUrl(item.image_url, 800, 600)} 800w` : undefined}
+            sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
             alt={item.title}
             loading="lazy"
             width={400}
@@ -140,3 +143,5 @@ export default function StudentNeedCard({ item }: StudentNeedCardProps) {
     </Link>
   )
 }
+
+export default memo(StudentNeedCard)

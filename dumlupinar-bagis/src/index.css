@@ -204,6 +204,30 @@ html {
   100% { background-position: 0% 50%; }
 }
 
+/* Accessibility: reduce motion for users who prefer it */
+@media (prefers-reduced-motion: reduce) {
+  .hero-animated-bg,
+  .hero-float-shape,
+  .hero-particle,
+  .hero-icon-pulse,
+  .hero-gradient-animate,
+  .marquee-track,
+  .payment-donor-card,
+  .amount-card-selected,
+  .custom-card-glow,
+  .custom-input-wrapper,
+  .cta-heartbeat,
+  .cta-pulse-ring,
+  .animate-pulse-soft {
+    animation: none !important;
+  }
+
+  .animate-fadeInUp {
+    animation: none !important;
+    opacity: 1 !important;
+  }
+}
+
 /* Smooth scroll */
 html {
   scroll-behavior: smooth;

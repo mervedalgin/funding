@@ -11,12 +11,22 @@
     <priority>0.7</priority>
   </url>
   <url>
+    <loc>https://dumlupinar-bagis.vercel.app/bagis-hikayeleri</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://dumlupinar-bagis.vercel.app/yasal-dayanak</loc>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
     <loc>https://dumlupinar-bagis.vercel.app/iletisim</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://dumlupinar-bagis.vercel.app/sss</loc>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>

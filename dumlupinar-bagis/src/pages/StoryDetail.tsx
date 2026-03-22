@@ -2,6 +2,8 @@ import { useEffect, useState } from 'react'
 import { useParams, Link } from 'react-router-dom'
 import { Helmet } from 'react-helmet-async'
 import { ArrowLeft, Calendar, Heart, TrendingUp, Users, BookHeart, ExternalLink } from 'lucide-react'
+import { sanitizeHtml } from '../lib/sanitize'
+import { SITE_URL } from '../lib/constants'
 import Navbar from '../components/Navbar'
 import ImageSlider from '../components/ImageSlider'
 import SocialShare from '../components/SocialShare'
@@ -74,6 +76,7 @@ export default function StoryDetail() {
         <meta property="og:type" content="article" />
         {story.cover_image_url && <meta property="og:image" content={story.cover_image_url} />}
         <meta name="twitter:card" content="summary_large_image" />
+        <link rel="canonical" href={`${SITE_URL}/bagis-hikayeleri/${slug}`} />
         <script type="application/ld+json">{JSON.stringify({
           "@context": "https://schema.org",
           "@type": "BlogPosting",
@@ -174,7 +177,7 @@ export default function StoryDetail() {
                 prose-ul:list-disc prose-ol:list-decimal
                 prose-li:text-gray-700
                 prose-img:rounded-xl"
-              dangerouslySetInnerHTML={{ __html: story.content }}
+              dangerouslySetInnerHTML={{ __html: sanitizeHtml(story.content) }}
             />
 
             {/* Gallery slider */}

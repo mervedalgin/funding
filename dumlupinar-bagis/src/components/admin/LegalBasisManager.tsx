@@ -3,6 +3,7 @@ import {
   Plus, Pencil, Trash2, Eye, EyeOff, Scale, GripVertical, ExternalLink,
   FileText, BookOpen, ShieldCheck, Landmark, Gavel, ScrollText, BadgeCheck, Building2, FileCheck,
 } from 'lucide-react'
+import { sanitizeHtml } from '../../lib/sanitize'
 import { useLegalBasis } from '../../hooks/useLegalBasis'
 import type { LegalBasisItem } from '../../types/donation'
 import DonationModal from '../DonationModal'
@@ -189,7 +190,7 @@ export default function LegalBasisManager() {
                     <div className="flex items-start justify-between gap-2">
                       <div className="flex-1 min-w-0">
                         <h3 className="font-semibold text-gray-800 text-sm leading-tight">{item.title}</h3>
-                        <p className="text-xs text-gray-500 mt-1 line-clamp-2" dangerouslySetInnerHTML={{ __html: item.content.replace(/<[^>]+>/g, ' ').slice(0, 150) }} />
+                        <p className="text-xs text-gray-500 mt-1 line-clamp-2" dangerouslySetInnerHTML={{ __html: sanitizeHtml(item.content.replace(/<[^>]+>/g, ' ').slice(0, 150)) }} />
                       </div>
 
                       {item.url && (
