@@ -137,6 +137,18 @@ export interface FaqItem {
   updated_at: string
 }
 
+export interface LegalBasisItem {
+  id: string
+  title: string
+  content: string
+  icon_name: string
+  url: string | null
+  sort_order: number
+  is_active: boolean
+  created_at: string
+  updated_at: string
+}
+
 export interface StudentDonation {
   id: string
   student_need_id: string | null

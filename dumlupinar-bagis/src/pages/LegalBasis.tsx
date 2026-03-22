@@ -1,32 +1,29 @@
 import { Link } from 'react-router-dom'
 import { Helmet } from 'react-helmet-async'
-import { Scale, FileText, BookOpen, ShieldCheck, ArrowLeft } from 'lucide-react'
+import {
+  Scale, FileText, BookOpen, ShieldCheck, ArrowLeft, ExternalLink,
+  Landmark, Gavel, ScrollText, BadgeCheck, Building2, FileCheck,
+} from 'lucide-react'
+import type { LucideIcon } from 'lucide-react'
 import Navbar from '../components/Navbar'
+import { useLegalBasis } from '../hooks/useLegalBasis'
 
-const legalItems = [
-  {
-    icon: Scale,
-    title: '5580 Sayılı Özel Öğretim Kurumları Kanunu',
-    desc: 'Okulların bağış kabul etmesine ilişkin yasal çerçeveyi belirler.',
-  },
-  {
-    icon: FileText,
-    title: 'Okul Aile Birliği Yönetmeliği',
-    desc: 'MEB Okul-Aile Birliği Yönetmeliği kapsamında, okul aile birlikleri bağış toplayabilir ve bu bağışları okulun ihtiyaçları doğrultusunda kullanabilir.',
-  },
-  {
-    icon: BookOpen,
-    title: 'Gelir Vergisi Kanunu Madde 89/1-4',
-    desc: 'Eğitim kurumlarına yapılan bağışlar, gelir vergisi matrahından indirilebilir. Bağışçılar vergi avantajından yararlanabilir.',
-  },
-  {
-    icon: ShieldCheck,
-    title: 'Milli Eğitim Temel Kanunu (1739)',
-    desc: 'Eğitim hizmetlerinin toplum desteğiyle güçlendirilmesini öngörür. Vatandaş katkıları bu kanun çerçevesinde değerlendirilir.',
-  },
-]
+const ICON_MAP: Record<string, LucideIcon> = {
+  'scale': Scale,
+  'file-text': FileText,
+  'book-open': BookOpen,
+  'shield-check': ShieldCheck,
+  'landmark': Landmark,
+  'gavel': Gavel,
+  'scroll-text': ScrollText,
+  'badge-check': BadgeCheck,
+  'building-2': Building2,
+  'file-check': FileCheck,
+}
 
 export default function LegalBasis() {
+  const { items, loading, error } = useLegalBasis()
+
   return (
     <div className="min-h-screen bg-gray-50" style={{ fontFamily: 'var(--font-body)' }}>
       <Helmet>
@@ -63,25 +60,61 @@ export default function LegalBasis() {
 
       {/* Content */}
       <main className="max-w-4xl mx-auto px-4 py-12">
-        <div className="space-y-6">
-          {legalItems.map((item, i) => (
-            <div
-              key={i}
-              className="bg-white rounded-2xl border border-gray-100 shadow-sm p-6 md:p-8 animate-fadeInUp"
-              style={{ animationDelay: `${i * 100}ms` }}
-            >
-              <div className="flex items-start gap-4">
-                <div className="shrink-0 w-12 h-12 rounded-xl bg-primary-100 flex items-center justify-center">
-                  <item.icon className="w-6 h-6 text-primary-600" />
+        {loading ? (
+          <div className="flex items-center justify-center py-16">
+            <div className="inline-block w-8 h-8 border-4 border-primary-200 border-t-primary-500 rounded-full animate-spin" />
+          </div>
+        ) : error ? (
+          <div className="text-center py-16">
+            <p className="text-gray-500">{error}</p>
+          </div>
+        ) : items.length === 0 ? (
+          <div className="text-center py-16">
+            <Scale className="w-16 h-16 text-gray-200 mx-auto mb-4" />
+            <p className="text-gray-500 font-medium">Yasal dayanak bilgileri yakında eklenecek.</p>
+          </div>
+        ) : (
+          <div className="space-y-6">
+            {items.map((item, i) => {
+              const IconComp = ICON_MAP[item.icon_name] || Scale
+              return (
+                <div
+                  key={item.id}
+                  className="bg-white rounded-2xl border border-gray-100 shadow-sm p-6 md:p-8 animate-fadeInUp"
+                  style={{ animationDelay: `${i * 100}ms` }}
+                >
+                  <div className="flex items-start gap-4">
+                    <div className="shrink-0 w-12 h-12 rounded-xl bg-primary-100 flex items-center justify-center">
+                      <IconComp className="w-6 h-6 text-primary-600" />
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <h2 className="font-bold text-gray-800 text-lg mb-2">{item.title}</h2>
+                      <div
+                        className="prose prose-sm max-w-none text-gray-600 leading-relaxed
+                          prose-headings:text-gray-800 prose-headings:font-bold
+                          prose-a:text-primary-600 prose-a:underline
+                          prose-ul:list-disc prose-ol:list-decimal
+                          prose-li:text-gray-600"
+                        dangerouslySetInnerHTML={{ __html: item.content }}
+                      />
+                      {item.url && (
+                        <a
+                          href={item.url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center gap-1.5 mt-4 text-sm font-medium text-primary-600 hover:text-primary-700 transition-colors"
+                        >
+                          <ExternalLink className="w-4 h-4" />
+                          Mevzuatı Görüntüle
+                        </a>
+                      )}
+                    </div>
+                  </div>
                 </div>
-                <div>
-                  <h2 className="font-bold text-gray-800 text-lg mb-2">{item.title}</h2>
-                  <p className="text-gray-600 leading-relaxed">{item.desc}</p>
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
+              )
+            })}
+          </div>
+        )}
 
         <div className="mt-10 bg-primary-50 border border-primary-100 rounded-2xl p-6 md:p-8">
           <h3 className="font-bold text-primary-800 mb-3">Bağışlarınız Nereye Gidiyor?</h3>

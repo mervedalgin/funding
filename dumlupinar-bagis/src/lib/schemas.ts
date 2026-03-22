@@ -102,6 +102,18 @@ export const FaqItemSchema = z.object({
   updated_at: z.string(),
 })
 
+export const LegalBasisItemSchema = z.object({
+  id: z.string(),
+  title: z.string(),
+  content: z.string(),
+  icon_name: z.string(),
+  url: z.string().nullable(),
+  sort_order: z.number(),
+  is_active: z.boolean(),
+  created_at: z.string(),
+  updated_at: z.string(),
+})
+
 export function parseArray<T>(schema: z.ZodType<T>, data: unknown): T[] {
   const result = z.array(schema).safeParse(data)
   if (!result.success) {

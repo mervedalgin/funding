@@ -1,5 +1,5 @@
 import { useState, useMemo, useCallback, useEffect, lazy, Suspense } from 'react'
-import { Plus, Download, ChevronDown, CreditCard, FileDown, Clock, ArrowRight, Package, HandCoins, GraduationCap, MessageCircle } from 'lucide-react'
+import { Plus, Download, ChevronDown, CreditCard, FileDown, Clock, ArrowRight, Package, HandCoins, GraduationCap, MessageCircle, Scale } from 'lucide-react'
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, PieChart, Pie, Cell, Legend } from 'recharts'
 import { useDonationItems } from '../../hooks/useDonationItems'
 import { useStudentNeeds } from '../../hooks/useStudentNeeds'
@@ -18,7 +18,7 @@ import { exportToCsv, formatRelativeTime } from '../../lib/formatters'
 import { Link, useSearchParams } from 'react-router-dom'
 
 type FilterStatus = DonationStatus | 'all'
-type DashboardTab = 'items' | 'donations' | 'students' | 'faq'
+type DashboardTab = 'items' | 'donations' | 'students' | 'faq' | 'legal'
 
 const PIE_COLORS = ['#0d9488', '#9ca3af', '#3b82f6']
 const STATUS_LABELS: Record<string, string> = { active: 'Aktif', draft: 'Taslak', completed: 'Tamamlandı' }
@@ -27,6 +27,7 @@ const DonationApproval = lazy(() => import('../../components/admin/DonationAppro
 const StudentNeedCardGrid = lazy(() => import('../../components/admin/StudentNeedCardGrid'))
 const StudentNeedForm = lazy(() => import('../../components/admin/StudentNeedForm'))
 const FaqManager = lazy(() => import('../../components/admin/FaqManager'))
+const LegalBasisManager = lazy(() => import('../../components/admin/LegalBasisManager'))
 
 export default function Dashboard() {
   const { items, loading, createItem, updateItem, deleteItem } = useDonationItems(true)
@@ -282,6 +283,17 @@ export default function Dashboard() {
             <MessageCircle className="w-4 h-4" />
             S.S.S
           </button>
+          <button
+            onClick={() => { setActiveTab('legal'); setSearchParams({ tab: 'legal' }) }}
+            className={`flex-1 flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg text-sm font-medium transition-all ${
+              activeTab === 'legal'
+                ? 'bg-white text-primary-700 shadow-sm'
+                : 'text-gray-500 hover:text-gray-700'
+            }`}
+          >
+            <Scale className="w-4 h-4" />
+            Yasal Dayanak
+          </button>
         </div>
 
         {/* Donations Tab */}
@@ -357,6 +369,17 @@ export default function Dashboard() {
             </div>
           }>
             <FaqManager />
+          </Suspense>
+        )}
+
+        {/* Legal Basis Tab */}
+        {activeTab === 'legal' && (
+          <Suspense fallback={
+            <div className="text-center py-12">
+              <div className="inline-block w-8 h-8 border-4 border-primary-200 border-t-primary-500 rounded-full animate-spin" />
+            </div>
+          }>
+            <LegalBasisManager />
           </Suspense>
         )}
 
