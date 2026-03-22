@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Helmet } from 'react-helmet-async'
 import { Lock, AlertTriangle } from 'lucide-react'
+import { useTranslation } from 'react-i18next'
 import { useAuth } from '../../hooks/useAuth'
 import { supabase } from '../../lib/supabaseClient'
 
@@ -10,6 +11,7 @@ const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL
 const IS_DEV = import.meta.env.DEV
 
 export default function Login() {
+  const { t } = useTranslation()
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
@@ -125,26 +127,26 @@ export default function Login() {
   return (
     <div className="min-h-screen bg-gray-50 flex items-center justify-center px-4">
       <Helmet>
-        <title>Admin Girişi - Dumlupınar İlkokulu</title>
+        <title>{t('login.title')}</title>
       </Helmet>
       <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-8 w-full max-w-sm">
         <div className="text-center mb-6">
           <div className="w-14 h-14 bg-primary-100 rounded-2xl flex items-center justify-center mx-auto mb-4">
             <Lock className="w-7 h-7 text-primary-600" />
           </div>
-          <h1 className="text-xl font-bold text-gray-800">Okul Yönetim Paneli</h1>
-          <p className="text-gray-500 text-sm mt-1">İhtiyaç yönetimi için giriş yapın</p>
+          <h1 className="text-xl font-bold text-gray-800">{t('login.heading')}</h1>
+          <p className="text-gray-500 text-sm mt-1">{t('login.subtitle')}</p>
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label htmlFor="login-username" className="block text-sm font-medium text-gray-700 mb-1">E-posta</label>
+            <label htmlFor="login-username" className="block text-sm font-medium text-gray-700 mb-1">{t('login.email')}</label>
             <input
               id="login-username"
               type="email"
               value={username}
               onChange={(e) => { setUsername(e.target.value); setError('') }}
-              placeholder="E-posta adresinizi girin"
+              placeholder={t('login.email_placeholder')}
               className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:border-primary-500 focus:outline-none text-base"
               autoFocus
               disabled={isLocked}
@@ -152,13 +154,13 @@ export default function Login() {
             />
           </div>
           <div>
-            <label htmlFor="login-password" className="block text-sm font-medium text-gray-700 mb-1">Şifre</label>
+            <label htmlFor="login-password" className="block text-sm font-medium text-gray-700 mb-1">{t('login.password')}</label>
             <input
               id="login-password"
               type="password"
               value={password}
               onChange={(e) => { setPassword(e.target.value); setError('') }}
-              placeholder="Şifrenizi girin"
+              placeholder={t('login.password_placeholder')}
               className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:border-primary-500 focus:outline-none text-base"
               disabled={isLocked}
               autoComplete="current-password"
@@ -180,7 +182,7 @@ export default function Login() {
             disabled={isLocked || submitting}
             className="w-full bg-primary-500 text-white py-3 rounded-xl font-medium hover:bg-primary-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed min-h-[44px]"
           >
-            {submitting ? 'Giriş yapılıyor...' : 'Giriş Yap'}
+            {submitting ? t('login.submitting') : t('login.submit')}
           </button>
         </form>
       </div>

@@ -12,6 +12,7 @@ import PaymentMethods from '../components/PaymentMethods'
 import ImpactBadge from '../components/ImpactBadge'
 import ProgressBar from '../components/ProgressBar'
 import { getOptimizedImageUrl } from '../lib/imageUtils'
+import { isSecureImageUrl } from '../lib/validation'
 
 export default function StudentNeedDetail() {
   const { id } = useParams<{ id: string }>()
@@ -119,7 +120,7 @@ export default function StudentNeedDetail() {
         </Link>
 
         <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
-          {item.image_url && item.image_url.startsWith('https://') ? (
+          {item.image_url && isSecureImageUrl(item.image_url) ? (
             <img src={getOptimizedImageUrl(item.image_url, 800, 400) ?? item.image_url} alt={item.title} loading="lazy" width={800} height={400} className="w-full h-48 sm:h-64 object-cover" />
           ) : (
             <div className="w-full h-48 sm:h-64 bg-gradient-to-br from-indigo-50 via-violet-50 to-purple-100 flex items-center justify-center">

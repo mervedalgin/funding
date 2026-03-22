@@ -52,27 +52,31 @@ export function useDonations(isAdmin = false) {
   }, [fetchDonations])
 
   const fetchPublicDonors = useCallback(async (): Promise<PublicDonor[]> => {
-    const { data, error: err } = await supabase
-      .from('donations')
-      .select('donor_name, amount, created_at')
-      .eq('status', 'confirmed')
-      .not('donor_name', 'is', null)
-      .order('created_at', { ascending: false })
+    return withRetry(async () => {
+      const { data, error: err } = await supabase
+        .from('donations')
+        .select('donor_name, amount, created_at')
+        .eq('status', 'confirmed')
+        .not('donor_name', 'is', null)
+        .order('created_at', { ascending: false })
 
-    if (err) throw err
-    return (data as PublicDonor[]) ?? []
+      if (err) throw err
+      return (data as PublicDonor[]) ?? []
+    })
   }, [])
 
   const fetchPublicDonorsWithItems = useCallback(async (): Promise<PublicDonorWithItem[]> => {
-    const { data, error: err } = await supabase
-      .from('donations')
-      .select('donor_name, amount, created_at, item_id, donation_items(title)')
-      .eq('status', 'confirmed')
-      .not('donor_name', 'is', null)
-      .order('created_at', { ascending: false })
+    return withRetry(async () => {
+      const { data, error: err } = await supabase
+        .from('donations')
+        .select('donor_name, amount, created_at, item_id, donation_items(title)')
+        .eq('status', 'confirmed')
+        .not('donor_name', 'is', null)
+        .order('created_at', { ascending: false })
 
-    if (err) throw err
-    return (data as PublicDonorWithItem[]) ?? []
+      if (err) throw err
+      return (data as PublicDonorWithItem[]) ?? []
+    })
   }, [])
 
   const createDonation = async (donation: {

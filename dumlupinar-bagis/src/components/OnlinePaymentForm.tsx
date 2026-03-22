@@ -24,16 +24,29 @@ export default function OnlinePaymentForm({ itemId, amount, itemTitle, donationT
     setLoading(true)
     setError('')
 
+    // Client-side validation
+    if (donorEmail && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(donorEmail)) {
+      setError('Geçerli bir e-posta adresi girin.')
+      setLoading(false)
+      return
+    }
+    if (donorPhone && !/^(05\d{9}|\+90\d{10})$/.test(donorPhone.replace(/\s/g, ''))) {
+      setError('Geçerli bir telefon numarası girin (05XX XXX XX XX).')
+      setLoading(false)
+      return
+    }
+
     try {
       const response = await fetch(`${SUPABASE_URL}/functions/v1/create-payment`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           item_id: itemId,
+          item_type: donationType === 'student' ? 'student_need' : 'donation_item',
           amount,
           donor_name: donorName || undefined,
           donor_email: donorEmail || undefined,
-          donor_phone: donorPhone || undefined,
+          donor_phone: donorPhone.replace(/\s/g, '') || undefined,
           provider: 'iyzico',
         }),
       })

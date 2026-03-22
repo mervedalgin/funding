@@ -55,6 +55,8 @@ export default function Navbar() {
 
   return (
     <nav
+      role="navigation"
+      aria-label="Ana navigasyon"
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
         showDark
           ? 'bg-white/95 backdrop-blur-md shadow-sm border-b border-gray-100'
@@ -67,6 +69,8 @@ export default function Navbar() {
           <img
             src="/logo.png"
             alt="Dumlupınar İlkokulu Logosu"
+            width={40}
+            height={40}
             className="w-10 h-10 rounded-full object-cover"
           />
           <span
@@ -154,7 +158,8 @@ export default function Navbar() {
               ? 'text-gray-600 hover:bg-gray-100'
               : 'text-white hover:bg-white/10'
           }`}
-          aria-label="Menü"
+          aria-label={menuOpen ? 'Menüyü kapat' : 'Menüyü aç'}
+          aria-expanded={menuOpen}
         >
           {menuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
         </button>
