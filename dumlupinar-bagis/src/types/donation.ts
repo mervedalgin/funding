@@ -88,6 +88,14 @@ export interface PublicDonorWithItem {
   donation_items: { title: string } | { title: string }[] | null
 }
 
+export interface PublicDonorUnified {
+  donor_name: string
+  amount: number
+  created_at: string
+  item_title: string
+  type: 'school' | 'student'
+}
+
 export interface AuditLog {
   id: string
   user_id: string | null

@@ -1,6 +1,6 @@
 import { useEffect, useState, useCallback } from 'react'
 import { supabase } from '../lib/supabaseClient'
-import type { Donation, StudentDonation, PublicDonor, PublicDonorWithItem } from '../types/donation'
+import type { Donation, StudentDonation, PublicDonor, PublicDonorWithItem, PublicDonorUnified } from '../types/donation'
 import { parseArray, DonationSchema, StudentDonationSchema } from '../lib/schemas'
 import { withRetry } from '../lib/fetchWithRetry'
 
@@ -143,6 +143,63 @@ export function useDonations(isAdmin = false) {
     })
   }, [])
 
+  /** Fetch confirmed donors from BOTH tables, unified */
+  const fetchAllPublicDonors = useCallback(async (): Promise<PublicDonorUnified[]> => {
+    const [schoolData, studentData] = await Promise.all([
+      withRetry(async () => {
+        const { data, error: err } = await supabase
+          .from('donations')
+          .select('donor_name, amount, created_at, donation_items(title)')
+          .eq('status', 'confirmed')
+          .not('donor_name', 'is', null)
+          .order('created_at', { ascending: false })
+        if (err) throw err
+        return data ?? []
+      }),
+      withRetry(async () => {
+        const { data, error: err } = await supabase
+          .from('student_donations')
+          .select('donor_name, amount, created_at, student_needs(title)')
+          .eq('status', 'confirmed')
+          .not('donor_name', 'is', null)
+          .order('created_at', { ascending: false })
+        if (err) throw err
+        return data ?? []
+      }),
+    ])
+
+    const school: PublicDonorUnified[] = schoolData.map((d: Record<string, unknown>) => ({
+      donor_name: d.donor_name as string,
+      amount: d.amount as number,
+      created_at: d.created_at as string,
+      item_title: ((d.donation_items as { title: string } | null)?.title) || 'Genel Bağış',
+      type: 'school' as const,
+    }))
+
+    const student: PublicDonorUnified[] = studentData.map((d: Record<string, unknown>) => ({
+      donor_name: d.donor_name as string,
+      amount: d.amount as number,
+      created_at: d.created_at as string,
+      item_title: ((d.student_needs as { title: string } | null)?.title) || 'Öğrenci Desteği',
+      type: 'student' as const,
+    }))
+
+    return [...school, ...student].sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime())
+  }, [])
+
+  /** Fetch just donor names for marquee (lightweight) */
+  const fetchPublicDonorNames = useCallback(async (): Promise<{ name: string; amount: number }[]> => {
+    const [d1, d2] = await Promise.all([
+      supabase.from('donations').select('donor_name, amount').eq('status', 'confirmed').not('donor_name', 'is', null).order('created_at', { ascending: false }).limit(30),
+      supabase.from('student_donations').select('donor_name, amount').eq('status', 'confirmed').not('donor_name', 'is', null).order('created_at', { ascending: false }).limit(30),
+    ])
+    const all = [...(d1.data ?? []), ...(d2.data ?? [])].map(d => ({ name: d.donor_name as string, amount: d.amount as number }))
+    // Deduplicate by name, keep highest amount
+    const map = new Map<string, number>()
+    all.forEach(d => { map.set(d.name, Math.max(map.get(d.name) || 0, d.amount)) })
+    return Array.from(map.entries()).map(([name, amount]) => ({ name, amount }))
+  }, [])
+
   const createDonation = async (donation: {
     donor_name?: string; donor_email?: string; donor_phone?: string
     amount: number; item_id?: string; payment_method?: string; payment_ref?: string; notes?: string
@@ -218,7 +275,7 @@ export function useDonations(isAdmin = false) {
     donations, studentDonations, allDonations,
     loading, error,
     fetchDonations,
-    fetchPublicDonors, fetchPublicDonorsWithItems,
+    fetchPublicDonors, fetchPublicDonorsWithItems, fetchAllPublicDonors, fetchPublicDonorNames,
     createDonation, confirmDonation, rejectDonation,
     updateDonationNotes, bulkConfirm, bulkReject,
   }
