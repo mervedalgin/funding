@@ -1,5 +1,6 @@
 // Allowed origins — production domain + local dev
 const ALLOWED_ORIGINS = [
+  'https://birecik.vercel.app',
   'https://dumlupinarbagis.vercel.app',
   'https://dumlupinar-bagis.vercel.app',
   'http://localhost:5173',
