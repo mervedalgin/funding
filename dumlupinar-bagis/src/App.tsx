@@ -16,6 +16,7 @@ const FAQ = lazy(() => import('./pages/FAQ'))
 const Login = lazy(() => import('./pages/admin/Login'))
 const Dashboard = lazy(() => import('./pages/admin/Dashboard'))
 const PaymentChannels = lazy(() => import('./pages/admin/PaymentChannels'))
+const AdminSettings = lazy(() => import('./pages/admin/Settings'))
 
 const AdminFallback = (
   <div className="min-h-screen bg-gray-50 flex items-center justify-center">
@@ -40,6 +41,7 @@ export default function App() {
           <Route path="/admin" element={<Suspense fallback={AdminFallback}><Login /></Suspense>} />
           <Route path="/admin/dashboard" element={<Suspense fallback={AdminFallback}><AdminGuard><Dashboard /></AdminGuard></Suspense>} />
           <Route path="/admin/payment-channels" element={<Suspense fallback={AdminFallback}><AdminGuard><PaymentChannels /></AdminGuard></Suspense>} />
+          <Route path="/admin/settings" element={<Suspense fallback={AdminFallback}><AdminGuard><AdminSettings /></AdminGuard></Suspense>} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
