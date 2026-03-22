@@ -34,18 +34,18 @@ CREATE POLICY "Admin can read all donation items"
 CREATE POLICY "Admin can insert donation items"
   ON public.donation_items FOR INSERT
   TO authenticated
-  WITH CHECK (auth.jwt() ->> 'email' = 'bozkurt@dumlupinar.edu.tr');
+  WITH CHECK (auth.jwt() ->> 'email' = '741604birecik@gmail.com');
 
 CREATE POLICY "Admin can update donation items"
   ON public.donation_items FOR UPDATE
   TO authenticated
-  USING (auth.jwt() ->> 'email' = 'bozkurt@dumlupinar.edu.tr')
-  WITH CHECK (auth.jwt() ->> 'email' = 'bozkurt@dumlupinar.edu.tr');
+  USING (auth.jwt() ->> 'email' = '741604birecik@gmail.com')
+  WITH CHECK (auth.jwt() ->> 'email' = '741604birecik@gmail.com');
 
 CREATE POLICY "Admin can delete donation items"
   ON public.donation_items FOR DELETE
   TO authenticated
-  USING (auth.jwt() ->> 'email' = 'bozkurt@dumlupinar.edu.tr');
+  USING (auth.jwt() ->> 'email' = '741604birecik@gmail.com');
 
 -- -------------------------------------------------------------------------
 -- payment_channels: Replace write policies
@@ -64,15 +64,15 @@ CREATE POLICY "Admin can read all payment channels"
 CREATE POLICY "Admin can insert payment channels"
   ON public.payment_channels FOR INSERT
   TO authenticated
-  WITH CHECK (auth.jwt() ->> 'email' = 'bozkurt@dumlupinar.edu.tr');
+  WITH CHECK (auth.jwt() ->> 'email' = '741604birecik@gmail.com');
 
 CREATE POLICY "Admin can update payment channels"
   ON public.payment_channels FOR UPDATE
   TO authenticated
-  USING (auth.jwt() ->> 'email' = 'bozkurt@dumlupinar.edu.tr')
-  WITH CHECK (auth.jwt() ->> 'email' = 'bozkurt@dumlupinar.edu.tr');
+  USING (auth.jwt() ->> 'email' = '741604birecik@gmail.com')
+  WITH CHECK (auth.jwt() ->> 'email' = '741604birecik@gmail.com');
 
 CREATE POLICY "Admin can delete payment channels"
   ON public.payment_channels FOR DELETE
   TO authenticated
-  USING (auth.jwt() ->> 'email' = 'bozkurt@dumlupinar.edu.tr');
+  USING (auth.jwt() ->> 'email' = '741604birecik@gmail.com');

@@ -55,7 +55,7 @@ const DEFAULT_SETTINGS: SiteSettings = {
   notification: {
     email_on_new_donation: true,
     email_on_goal_reached: true,
-    admin_email: 'bozkurt@dumlupinar.edu.tr',
+    admin_email: import.meta.env.VITE_ADMIN_EMAIL || '',
   },
   appearance: {
     maintenance_mode: false,

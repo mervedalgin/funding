@@ -9,17 +9,20 @@ const MAX_FILE_SIZE = 2 * 1024 * 1024
 const ACCEPTED_TYPES = ['image/jpeg', 'image/png', 'image/webp']
 
 const schema = z.object({
-  title: z.string().min(1, 'Başlık zorunlu'),
-  description: z.string().optional(),
+  title: z.string().min(1, 'Başlık zorunlu').max(200, 'Başlık en fazla 200 karakter olabilir'),
+  description: z.string().max(2000, 'Açıklama en fazla 2000 karakter olabilir').optional(),
   image_url: z.string().optional().refine(
     (val) => !val || val.startsWith('https://') || val.startsWith('data:'),
     'Fotoğraf linki https:// ile başlamalıdır'
   ),
-  price: z.coerce.number().min(0, 'Birim fiyat 0 veya üzeri olmalı'),
+  price: z.coerce.number().min(1, 'Birim fiyat en az 1 ₺ olmalı'),
   student_count: z.coerce.number().int().min(1, 'En az 1 öğrenci').default(1),
-  bank_name: z.string().optional(),
-  iban: z.string().optional(),
-  payment_ref: z.string().optional(),
+  bank_name: z.string().max(100, 'Banka adı en fazla 100 karakter').optional(),
+  iban: z.string().optional().refine(
+    (val) => !val || /^TR\d{24}$/.test(val.replace(/\s/g, '')),
+    'Geçerli bir IBAN girin (TR + 24 rakam)'
+  ),
+  payment_ref: z.string().max(50, 'Referans kodu en fazla 50 karakter').optional(),
   payment_url: z.string().optional().refine(
     (val) => !val || val.startsWith('https://'),
     'Link https:// ile başlamalıdır'
@@ -28,7 +31,7 @@ const schema = z.object({
     (val) => !val || val.startsWith('https://'),
     'Link https:// ile başlamalıdır'
   ),
-  impact_text: z.string().optional(),
+  impact_text: z.string().max(500, 'Etki metni en fazla 500 karakter').optional(),
   donor_count: z.coerce.number().int().min(0).default(0),
   custom_amount_min: z.coerce.number().min(0).default(10),
   target_amount: z.coerce.number().min(0).default(0),

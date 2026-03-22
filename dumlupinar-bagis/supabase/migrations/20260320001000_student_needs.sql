@@ -38,22 +38,22 @@ create policy "Public can view active student needs"
 -- Admin: read all
 create policy "Admin can view all student needs"
   on student_needs for select
-  using (auth.jwt() ->> 'email' = 'bozkurt@dumlupinar.edu.tr');
+  using (auth.jwt() ->> 'email' = '741604birecik@gmail.com');
 
 -- Admin: insert
 create policy "Admin can insert student needs"
   on student_needs for insert
-  with check (auth.jwt() ->> 'email' = 'bozkurt@dumlupinar.edu.tr');
+  with check (auth.jwt() ->> 'email' = '741604birecik@gmail.com');
 
 -- Admin: update
 create policy "Admin can update student needs"
   on student_needs for update
-  using (auth.jwt() ->> 'email' = 'bozkurt@dumlupinar.edu.tr');
+  using (auth.jwt() ->> 'email' = '741604birecik@gmail.com');
 
 -- Admin: delete
 create policy "Admin can delete student needs"
   on student_needs for delete
-  using (auth.jwt() ->> 'email' = 'bozkurt@dumlupinar.edu.tr');
+  using (auth.jwt() ->> 'email' = '741604birecik@gmail.com');
 
 -- Audit log trigger
 create or replace function audit_student_needs()

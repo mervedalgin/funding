@@ -11,6 +11,7 @@ import PaymentMethods from '../components/PaymentMethods'
 import ImpactBadge from '../components/ImpactBadge'
 import ProgressBar from '../components/ProgressBar'
 import { getOptimizedImageUrl } from '../lib/imageUtils'
+import { isSecureImageUrl } from '../lib/validation'
 
 export default function ItemDetail() {
   const { id } = useParams<{ id: string }>()
@@ -123,7 +124,7 @@ export default function ItemDetail() {
         </Link>
 
         <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
-          {item.image_url && item.image_url.startsWith('https://') ? (
+          {item.image_url && isSecureImageUrl(item.image_url) ? (
             <img src={getOptimizedImageUrl(item.image_url, 800, 400) ?? item.image_url} alt={item.title} loading="lazy" width={800} height={400} className="w-full h-48 sm:h-64 object-cover" />
           ) : (
             <div className="w-full h-48 sm:h-64 bg-gradient-to-br from-primary-50 to-primary-100 flex items-center justify-center">

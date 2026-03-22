@@ -19,7 +19,7 @@ create policy "Admin upload donation images"
 on storage.objects for insert
 with check (
   bucket_id = 'donation-images'
-  and auth.jwt() ->> 'email' = 'bozkurt@dumlupinar.edu.tr'
+  and auth.jwt() ->> 'email' = '741604birecik@gmail.com'
 );
 
 -- Admin delete policy
@@ -27,5 +27,5 @@ create policy "Admin delete donation images"
 on storage.objects for delete
 using (
   bucket_id = 'donation-images'
-  and auth.jwt() ->> 'email' = 'bozkurt@dumlupinar.edu.tr'
+  and auth.jwt() ->> 'email' = '741604birecik@gmail.com'
 );

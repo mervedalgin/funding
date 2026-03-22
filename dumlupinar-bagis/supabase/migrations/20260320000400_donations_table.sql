@@ -36,20 +36,20 @@ create policy "Anyone can insert donations"
 create policy "Admin can read donations"
   on public.donations for select
   to authenticated
-  using (auth.jwt() ->> 'email' = 'bozkurt@dumlupinar.edu.tr');
+  using (auth.jwt() ->> 'email' = '741604birecik@gmail.com');
 
 -- Sadece admin bağış durumunu güncelleyebilir
 create policy "Admin can update donations"
   on public.donations for update
   to authenticated
-  using (auth.jwt() ->> 'email' = 'bozkurt@dumlupinar.edu.tr')
-  with check (auth.jwt() ->> 'email' = 'bozkurt@dumlupinar.edu.tr');
+  using (auth.jwt() ->> 'email' = '741604birecik@gmail.com')
+  with check (auth.jwt() ->> 'email' = '741604birecik@gmail.com');
 
 -- Sadece admin bağış kaydı silebilir
 create policy "Admin can delete donations"
   on public.donations for delete
   to authenticated
-  using (auth.jwt() ->> 'email' = 'bozkurt@dumlupinar.edu.tr');
+  using (auth.jwt() ->> 'email' = '741604birecik@gmail.com');
 
 -- Index: item_id ile sorgulama hızlandırma
 create index idx_donations_item_id on public.donations(item_id);

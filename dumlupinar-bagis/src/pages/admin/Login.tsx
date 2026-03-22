@@ -6,8 +6,8 @@ import { useAuth } from '../../hooks/useAuth'
 import { supabase } from '../../lib/supabaseClient'
 
 const MAX_ATTEMPTS = 5
-const LOCKOUT_DURATION = 5 * 60 * 1000 // 5 minutes
 const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL
+const IS_DEV = import.meta.env.DEV
 
 export default function Login() {
   const [username, setUsername] = useState('')
@@ -27,21 +27,7 @@ export default function Login() {
     }
   }, [authLoading, isAuthenticated, navigate])
 
-  // Restore lockout state from localStorage
-  useEffect(() => {
-    const stored = localStorage.getItem('admin_lockout')
-    if (stored) {
-      const until = parseInt(stored, 10)
-      if (until > Date.now()) {
-        setLockUntil(until)
-        setAttempts(MAX_ATTEMPTS)
-      } else {
-        localStorage.removeItem('admin_lockout')
-      }
-    }
-  }, [])
-
-  // Countdown timer
+  // Countdown timer — in-memory only, server is the real enforcer
   useEffect(() => {
     if (!lockUntil) { setCountdown(0); return }
     const tick = () => {
@@ -50,7 +36,6 @@ export default function Login() {
       if (remaining <= 0) {
         setLockUntil(null)
         setAttempts(0)
-        localStorage.removeItem('admin_lockout')
       }
     }
     tick()
@@ -67,7 +52,7 @@ export default function Login() {
     setSubmitting(true)
     setError('')
 
-    const email = `${username.trim().toLowerCase()}@dumlupinar.edu.tr`
+    const email = username.trim().toLowerCase()
 
     try {
       // Use server-side rate-limited login via Edge Function
@@ -85,7 +70,6 @@ export default function Login() {
         const until = Date.now() + retrySeconds * 1000
         setLockUntil(until)
         setAttempts(MAX_ATTEMPTS)
-        localStorage.setItem('admin_lockout', String(until))
         setError(`Çok fazla deneme. ${Math.ceil(retrySeconds / 60)} dakika bekleyin.`)
       } else if (!response.ok) {
         // Auth error
@@ -93,10 +77,10 @@ export default function Login() {
         setAttempts(newAttempts)
         const remaining = data.remaining_attempts ?? (MAX_ATTEMPTS - newAttempts)
         if (remaining <= 0) {
-          const until = Date.now() + LOCKOUT_DURATION
+          const retrySeconds = data.retry_after || 300
+          const until = Date.now() + retrySeconds * 1000
           setLockUntil(until)
-          localStorage.setItem('admin_lockout', String(until))
-          setError(`Çok fazla deneme. ${Math.ceil(LOCKOUT_DURATION / 60000)} dakika bekleyin.`)
+          setError(`Çok fazla deneme. ${Math.ceil(retrySeconds / 60)} dakika bekleyin.`)
         } else {
           setError(`Geçersiz kullanıcı adı veya şifre (${remaining} deneme kaldı)`)
         }
@@ -109,27 +93,21 @@ export default function Login() {
           })
         }
         setAttempts(0)
-        localStorage.removeItem('admin_lockout')
         navigate('/admin/dashboard')
       }
     } catch {
-      // Fallback to direct login if Edge Function is unavailable
-      const { error: authError } = await login(email, password)
-      if (authError) {
-        const newAttempts = attempts + 1
-        setAttempts(newAttempts)
-        if (newAttempts >= MAX_ATTEMPTS) {
-          const until = Date.now() + LOCKOUT_DURATION
-          setLockUntil(until)
-          localStorage.setItem('admin_lockout', String(until))
-          setError(`Çok fazla deneme. ${Math.ceil(LOCKOUT_DURATION / 60000)} dakika bekleyin.`)
+      if (IS_DEV) {
+        // Development only: direct login when Edge Function is unavailable
+        const { error: authError } = await login(email, password)
+        if (authError) {
+          setError(authError.message)
         } else {
-          setError(`${authError.message} (${MAX_ATTEMPTS - newAttempts} deneme kaldı)`)
+          setAttempts(0)
+          navigate('/admin/dashboard')
         }
       } else {
-        setAttempts(0)
-        localStorage.removeItem('admin_lockout')
-        navigate('/admin/dashboard')
+        // Production: fail-closed, do NOT fall back to direct login
+        setError('Giriş servisi şu anda kullanılamıyor. Lütfen daha sonra tekrar deneyin.')
       }
     }
 
@@ -160,13 +138,13 @@ export default function Login() {
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label htmlFor="login-username" className="block text-sm font-medium text-gray-700 mb-1">Kullanıcı Adı</label>
+            <label htmlFor="login-username" className="block text-sm font-medium text-gray-700 mb-1">E-posta</label>
             <input
               id="login-username"
-              type="text"
+              type="email"
               value={username}
               onChange={(e) => { setUsername(e.target.value); setError('') }}
-              placeholder="Kullanıcı adınızı girin"
+              placeholder="E-posta adresinizi girin"
               className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:border-primary-500 focus:outline-none text-base"
               autoFocus
               disabled={isLocked}

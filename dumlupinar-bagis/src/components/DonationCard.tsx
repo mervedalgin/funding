@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom'
 import { Package, TrendingUp, Sparkles, Heart, Users, ArrowRight, CheckCircle } from 'lucide-react'
 import type { DonationItem } from '../types/donation'
 import { getOptimizedImageUrl } from '../lib/imageUtils'
+import { isSecureImageUrl } from '../lib/validation'
 
 interface DonationCardProps {
   item: DonationItem
@@ -20,7 +21,7 @@ export default function DonationCard({ item }: DonationCardProps) {
     >
       {/* Image section with overlay */}
       <div className="relative overflow-hidden">
-        {item.image_url && item.image_url.startsWith('https://') ? (
+        {item.image_url && isSecureImageUrl(item.image_url) ? (
           <img
             src={getOptimizedImageUrl(item.image_url, 400, 300) ?? item.image_url}
             alt={item.title}

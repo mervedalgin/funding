@@ -1,6 +1,8 @@
 import { useEffect, useState, useCallback } from 'react'
 import { supabase } from '../lib/supabaseClient'
 import type { Donation, PublicDonor, PublicDonorWithItem } from '../types/donation'
+import { parseArray, DonationSchema } from '../lib/schemas'
+import { withRetry } from '../lib/fetchWithRetry'
 
 export function groupDonorsByName(donors: PublicDonorWithItem[]) {
   const grouped = new Map<string, { donations: PublicDonorWithItem[]; totalAmount: number }>()
@@ -22,21 +24,25 @@ export function useDonations(isAdmin = false) {
     setLoading(true)
     setError(null)
 
-    let query = supabase
-      .from('donations')
-      .select('*')
-      .order('created_at', { ascending: false })
+    try {
+      const data = await withRetry(async () => {
+        let query = supabase
+          .from('donations')
+          .select('*')
+          .order('created_at', { ascending: false })
 
-    if (!isAdmin) {
-      query = query.eq('status', 'confirmed')
-    }
+        if (!isAdmin) {
+          query = query.eq('status', 'confirmed')
+        }
 
-    const { data, error: err } = await query
+        const { data, error: err } = await query
+        if (err) throw err
+        return data
+      })
 
-    if (err) {
-      setError(err.message)
-    } else {
-      setDonations((data as Donation[]) ?? [])
+      setDonations(parseArray(DonationSchema, data))
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Veriler yüklenirken bir sorun oluştu')
     }
     setLoading(false)
   }, [isAdmin])

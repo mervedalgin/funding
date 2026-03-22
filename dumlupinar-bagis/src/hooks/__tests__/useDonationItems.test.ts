@@ -20,6 +20,29 @@ function createQueryBuilder(resolvedValue: { data: unknown; error: unknown }) {
   return builder
 }
 
+const mockItem = (overrides: Record<string, unknown> = {}) => ({
+  id: '1',
+  title: 'Akıllı Tahta',
+  description: null,
+  image_url: null,
+  price: 25000,
+  custom_amount_min: 10,
+  bank_name: null,
+  iban: null,
+  payment_ref: null,
+  payment_url: null,
+  internet_banking_url: null,
+  impact_text: null,
+  donor_count: 0,
+  target_amount: 0,
+  collected_amount: 0,
+  status: 'active',
+  sort_order: 0,
+  created_at: '2026-01-01T00:00:00Z',
+  updated_at: '2026-01-01T00:00:00Z',
+  ...overrides,
+})
+
 let queryBuilder: ReturnType<typeof createQueryBuilder>
 
 vi.mock('../../lib/supabaseClient', () => ({
@@ -28,13 +51,17 @@ vi.mock('../../lib/supabaseClient', () => ({
   },
 }))
 
+vi.mock('../../lib/fetchWithRetry', () => ({
+  withRetry: (fn: () => Promise<unknown>) => fn(),
+}))
+
 describe('useDonationItems', () => {
   beforeEach(() => {
     vi.clearAllMocks()
     queryBuilder = createQueryBuilder({
       data: [
-        { id: '1', title: 'Akıllı Tahta', status: 'active', price: 25000 },
-        { id: '2', title: 'Projektör', status: 'active', price: 8500 },
+        mockItem({ id: '1', title: 'Akıllı Tahta', price: 25000 }),
+        mockItem({ id: '2', title: 'Projektör', price: 8500 }),
       ],
       error: null,
     })
@@ -83,7 +110,7 @@ describe('useDonationItems', () => {
       expect(result.current.loading).toBe(false)
     })
 
-    expect(result.current.error).toBe('Network error')
+    expect(result.current.error).toBeTruthy()
     expect(result.current.items).toHaveLength(0)
   })
 })

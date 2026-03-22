@@ -1,6 +1,8 @@
 import { useEffect, useState, useCallback } from 'react'
 import { supabase } from '../lib/supabaseClient'
 import type { PaymentChannel } from '../types/donation'
+import { parseArray, PaymentChannelSchema } from '../lib/schemas'
+import { withRetry } from '../lib/fetchWithRetry'
 
 export function usePaymentChannels(skip = false) {
   const [channels, setChannels] = useState<PaymentChannel[]>([])
@@ -11,15 +13,20 @@ export function usePaymentChannels(skip = false) {
     setLoading(true)
     setError(null)
 
-    const { data, error: err } = await supabase
-      .from('payment_channels')
-      .select('*')
-      .order('sort_order', { ascending: true })
+    try {
+      const data = await withRetry(async () => {
+        const { data, error: err } = await supabase
+          .from('payment_channels')
+          .select('*')
+          .order('sort_order', { ascending: true })
 
-    if (err) {
-      setError(err.message)
-    } else {
-      setChannels((data as PaymentChannel[]) ?? [])
+        if (err) throw err
+        return data
+      })
+
+      setChannels(parseArray(PaymentChannelSchema, data))
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Veriler yüklenirken bir sorun oluştu')
     }
     setLoading(false)
   }, [])

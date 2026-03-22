@@ -31,7 +31,7 @@ create policy "Anyone can create student donations"
 -- Admin: full access
 create policy "Admin can manage student donations"
   on student_donations for all
-  using (auth.jwt() ->> 'email' = 'bozkurt@dumlupinar.edu.tr');
+  using (auth.jwt() ->> 'email' = '741604birecik@gmail.com');
 
 -- Public: can view confirmed donations (donor list)
 create policy "Public can view confirmed student donations"

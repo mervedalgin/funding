@@ -1,6 +1,8 @@
 import { useEffect, useState, useCallback } from 'react'
 import { supabase } from '../lib/supabaseClient'
 import type { StudentDonation } from '../types/donation'
+import { parseArray, StudentDonationSchema } from '../lib/schemas'
+import { withRetry } from '../lib/fetchWithRetry'
 
 export function useStudentDonations(isAdmin = false) {
   const [donations, setDonations] = useState<StudentDonation[]>([])
@@ -11,21 +13,25 @@ export function useStudentDonations(isAdmin = false) {
     setLoading(true)
     setError(null)
 
-    let query = supabase
-      .from('student_donations')
-      .select('*')
-      .order('created_at', { ascending: false })
+    try {
+      const data = await withRetry(async () => {
+        let query = supabase
+          .from('student_donations')
+          .select('*')
+          .order('created_at', { ascending: false })
 
-    if (!isAdmin) {
-      query = query.eq('status', 'confirmed')
-    }
+        if (!isAdmin) {
+          query = query.eq('status', 'confirmed')
+        }
 
-    const { data, error: err } = await query
+        const { data, error: err } = await query
+        if (err) throw err
+        return data
+      })
 
-    if (err) {
-      setError(err.message)
-    } else {
-      setDonations((data as StudentDonation[]) ?? [])
+      setDonations(parseArray(StudentDonationSchema, data))
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Veriler yüklenirken bir sorun oluştu')
     }
     setLoading(false)
   }, [isAdmin])

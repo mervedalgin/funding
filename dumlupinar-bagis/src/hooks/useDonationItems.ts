@@ -1,6 +1,8 @@
 import { useEffect, useState, useCallback } from 'react'
 import { supabase } from '../lib/supabaseClient'
 import type { DonationItem } from '../types/donation'
+import { parseArray, DonationItemSchema } from '../lib/schemas'
+import { withRetry } from '../lib/fetchWithRetry'
 
 export function useDonationItems(includeAll = false) {
   const [items, setItems] = useState<DonationItem[]>([])
@@ -11,21 +13,25 @@ export function useDonationItems(includeAll = false) {
     setLoading(true)
     setError(null)
 
-    let query = supabase
-      .from('donation_items')
-      .select('*')
-      .order('sort_order', { ascending: true })
+    try {
+      const data = await withRetry(async () => {
+        let query = supabase
+          .from('donation_items')
+          .select('*')
+          .order('sort_order', { ascending: true })
 
-    if (!includeAll) {
-      query = query.eq('status', 'active')
-    }
+        if (!includeAll) {
+          query = query.eq('status', 'active')
+        }
 
-    const { data, error: err } = await query
+        const { data, error: err } = await query
+        if (err) throw err
+        return data
+      })
 
-    if (err) {
-      setError(err.message)
-    } else {
-      setItems((data as DonationItem[]) ?? [])
+      setItems(parseArray(DonationItemSchema, data))
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Veriler yüklenirken bir sorun oluştu')
     }
     setLoading(false)
   }, [includeAll])

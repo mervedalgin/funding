@@ -1,6 +1,8 @@
 import { useEffect, useState, useCallback } from 'react'
 import { supabase } from '../lib/supabaseClient'
 import type { FaqItem } from '../types/donation'
+import { parseArray, FaqItemSchema } from '../lib/schemas'
+import { withRetry } from '../lib/fetchWithRetry'
 
 export function useFaq(includeAll = false) {
   const [items, setItems] = useState<FaqItem[]>([])
@@ -11,21 +13,25 @@ export function useFaq(includeAll = false) {
     setLoading(true)
     setError(null)
 
-    let query = supabase
-      .from('faq_items')
-      .select('*')
-      .order('sort_order', { ascending: true })
+    try {
+      const data = await withRetry(async () => {
+        let query = supabase
+          .from('faq_items')
+          .select('*')
+          .order('sort_order', { ascending: true })
 
-    if (!includeAll) {
-      query = query.eq('is_active', true)
-    }
+        if (!includeAll) {
+          query = query.eq('is_active', true)
+        }
 
-    const { data, error: err } = await query
+        const { data, error: err } = await query
+        if (err) throw err
+        return data
+      })
 
-    if (err) {
-      setError(err.message)
-    } else {
-      setItems((data as FaqItem[]) ?? [])
+      setItems(parseArray(FaqItemSchema, data))
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Veriler yüklenirken bir sorun oluştu')
     }
     setLoading(false)
   }, [includeAll])

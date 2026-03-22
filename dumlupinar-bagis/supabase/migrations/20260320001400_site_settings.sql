@@ -28,6 +28,6 @@ create policy "Authenticated users can manage site settings"
 insert into public.site_settings (key, value) values
   ('general', '{"site_name": "Dumlupınar Üniversitesi Bağış Platformu", "site_description": "Dumlupınar Üniversitesi öğrencileri için bağış toplama platformu", "contact_email": "bagis@dumlupinar.edu.tr", "contact_phone": "", "address": ""}'),
   ('donation', '{"min_amount": 10, "auto_approve": false, "show_donor_names": true, "show_collected_amounts": true, "allow_anonymous": true}'),
-  ('notification', '{"email_on_new_donation": true, "email_on_goal_reached": true, "admin_email": "bozkurt@dumlupinar.edu.tr"}'),
+  ('notification', '{"email_on_new_donation": true, "email_on_goal_reached": true, "admin_email": "741604birecik@gmail.com"}'),
   ('appearance', '{"maintenance_mode": false, "announcement_text": "", "announcement_active": false, "primary_color": "#0d9488"}')
 on conflict (key) do nothing;

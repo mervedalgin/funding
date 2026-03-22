@@ -13,8 +13,8 @@ const FAQ_CATEGORIES = [
 ] as const
 
 const schema = z.object({
-  question: z.string().min(1, 'Soru zorunlu'),
-  answer: z.string().min(1, 'Cevap zorunlu'),
+  question: z.string().min(1, 'Soru zorunlu').max(500, 'Soru en fazla 500 karakter olabilir'),
+  answer: z.string().min(1, 'Cevap zorunlu').max(5000, 'Cevap en fazla 5000 karakter olabilir'),
   category: z.string().default('genel'),
   sort_order: z.coerce.number().int().default(0),
   is_active: z.boolean().default(true),

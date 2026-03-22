@@ -2,7 +2,7 @@ import { useEffect, type ReactNode } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../../hooks/useAuth'
 
-const ADMIN_EMAIL = 'bozkurt@dumlupinar.edu.tr'
+const ADMIN_EMAIL = import.meta.env.VITE_ADMIN_EMAIL || ''
 
 interface AdminGuardProps {
   children: ReactNode

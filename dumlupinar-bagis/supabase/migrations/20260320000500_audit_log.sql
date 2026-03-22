@@ -23,7 +23,7 @@ alter table public.audit_log enable row level security;
 create policy "Admin can read audit log"
   on public.audit_log for select
   to authenticated
-  using (auth.jwt() ->> 'email' = 'bozkurt@dumlupinar.edu.tr');
+  using (auth.jwt() ->> 'email' = '741604birecik@gmail.com');
 
 -- Trigger fonksiyonu: donation_items değişikliklerini logla
 create or replace function log_donation_items_changes()

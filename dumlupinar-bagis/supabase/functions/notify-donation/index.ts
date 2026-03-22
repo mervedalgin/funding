@@ -1,6 +1,6 @@
 import { corsHeaders } from '../_shared/cors.ts'
 
-const ADMIN_EMAIL = 'bozkurt@dumlupinar.edu.tr'
+const ADMIN_EMAIL = Deno.env.get('ADMIN_EMAIL') || ''
 
 Deno.serve(async (req: Request) => {
   if (req.method === 'OPTIONS') {
