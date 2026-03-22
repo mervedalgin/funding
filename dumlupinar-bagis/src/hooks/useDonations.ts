@@ -154,11 +154,30 @@ export function useDonations(isAdmin = false) {
   }
 
   const confirmDonation = async (id: string, table: 'donations' | 'student_donations' = 'donations') => {
+    // 1. Update status
     const { error: err } = await supabase
       .from(table)
       .update({ status: 'confirmed', confirmed_at: new Date().toISOString() })
       .eq('id', id)
     if (err) throw err
+
+    // 2. Get donation details for stats update
+    const { data: donation } = await supabase
+      .from(table)
+      .select('amount, item_id, student_need_id')
+      .eq('id', id)
+      .single()
+
+    // 3. Increment collected_amount + donor_count on the linked item
+    if (donation) {
+      const itemId = table === 'student_donations' ? donation.student_need_id : donation.item_id
+      if (itemId && donation.amount) {
+        const rpcName = table === 'student_donations' ? 'increment_student_need_stats' : 'increment_donation_stats'
+        const paramName = table === 'student_donations' ? 'p_need_id' : 'p_item_id'
+        await supabase.rpc(rpcName, { [paramName]: itemId, p_amount: donation.amount })
+      }
+    }
+
     await fetchDonations()
   }
 
@@ -177,13 +196,10 @@ export function useDonations(isAdmin = false) {
   }
 
   const bulkConfirm = async (items: { id: string; table: 'donations' | 'student_donations' }[]) => {
-    const now = new Date().toISOString()
-    await Promise.all(
-      items.map(({ id, table }) =>
-        supabase.from(table).update({ status: 'confirmed', confirmed_at: now }).eq('id', id)
-      )
-    )
-    await fetchDonations()
+    // Use sequential confirmDonation to ensure stats are updated for each
+    for (const { id, table } of items) {
+      await confirmDonation(id, table)
+    }
   }
 
   const bulkReject = async (items: { id: string; table: 'donations' | 'student_donations' }[], reason?: string) => {
