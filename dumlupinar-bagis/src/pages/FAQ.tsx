@@ -49,12 +49,12 @@ function AccordionCard({ question, answer, isOpen, onToggle, index }: {
         </button>
 
         <div
-          className={`transition-all duration-500 ease-in-out overflow-hidden ${
-            isOpen ? 'max-h-[500px] opacity-100' : 'max-h-0 opacity-0'
+          className={`transition-all duration-500 ease-in-out ${
+            isOpen ? 'max-h-[2000px] opacity-100' : 'max-h-0 opacity-0 overflow-hidden'
           }`}
         >
           <div className="px-5 md:px-6 pb-5 md:pb-6 pt-0">
-            <div className="pl-14 border-l-2 border-primary-100 ml-0.5">
+            <div className="pl-14 border-l-2 border-primary-100 ml-0.5 max-h-[60vh] overflow-y-auto pr-2 scrollbar-thin">
               <p className="text-gray-600 leading-relaxed whitespace-pre-line">{answer}</p>
             </div>
           </div>

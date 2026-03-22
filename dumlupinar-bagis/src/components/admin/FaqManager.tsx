@@ -1,9 +1,9 @@
-import { useState, useCallback } from 'react'
+import { useState, useCallback, useRef } from 'react'
 import { Plus, Pencil, Trash2, Eye, EyeOff, MessageCircle, GripVertical } from 'lucide-react'
 import { useFaq } from '../../hooks/useFaq'
 import type { FaqItem } from '../../types/donation'
 import DonationModal from '../DonationModal'
-import FaqForm from './FaqForm'
+import FaqForm, { FAQ_CATEGORIES } from './FaqForm'
 import ConfirmDialog from './ConfirmDialog'
 
 export default function FaqManager() {
@@ -12,6 +12,11 @@ export default function FaqManager() {
   const [editingItem, setEditingItem] = useState<FaqItem | null>(null)
   const [deleteId, setDeleteId] = useState<string | null>(null)
   const [toast, setToast] = useState<string | null>(null)
+
+  // Drag state
+  const [dragId, setDragId] = useState<string | null>(null)
+  const [dragOverId, setDragOverId] = useState<string | null>(null)
+  const dragCounter = useRef(0)
 
   const showToast = useCallback((msg: string) => {
     setToast(msg)
@@ -59,6 +64,72 @@ export default function FaqManager() {
     }
   }
 
+  // Drag & drop handlers
+  const handleDragStart = (id: string) => {
+    setDragId(id)
+  }
+
+  const handleDragEnter = (id: string) => {
+    dragCounter.current++
+    setDragOverId(id)
+  }
+
+  const handleDragLeave = () => {
+    dragCounter.current--
+    if (dragCounter.current <= 0) {
+      setDragOverId(null)
+      dragCounter.current = 0
+    }
+  }
+
+  const handleDragOver = (e: React.DragEvent) => {
+    e.preventDefault()
+  }
+
+  const handleDrop = async (targetId: string) => {
+    setDragOverId(null)
+    dragCounter.current = 0
+
+    if (!dragId || dragId === targetId) {
+      setDragId(null)
+      return
+    }
+
+    const dragIndex = items.findIndex(i => i.id === dragId)
+    const targetIndex = items.findIndex(i => i.id === targetId)
+
+    if (dragIndex === -1 || targetIndex === -1) {
+      setDragId(null)
+      return
+    }
+
+    // Reorder: update sort_order for affected items
+    const reordered = [...items]
+    const [moved] = reordered.splice(dragIndex, 1)
+    reordered.splice(targetIndex, 0, moved)
+
+    // Batch update sort_order
+    try {
+      const updates = reordered.map((item, i) => updateItem(item.id, { sort_order: i }))
+      await Promise.all(updates)
+      showToast('Sıralama güncellendi')
+    } catch {
+      showToast('Sıralama güncellenemedi')
+    }
+
+    setDragId(null)
+  }
+
+  const handleDragEnd = () => {
+    setDragId(null)
+    setDragOverId(null)
+    dragCounter.current = 0
+  }
+
+  const getCategoryLabel = (value: string) => {
+    return FAQ_CATEGORIES.find(c => c.value === value)?.label || value
+  }
+
   if (loading) {
     return (
       <div className="flex items-center justify-center py-12">
@@ -73,7 +144,7 @@ export default function FaqManager() {
       <div className="flex items-center justify-between">
         <div>
           <h2 className="text-lg font-bold text-gray-800">Sıkça Sorulan Sorular</h2>
-          <p className="text-sm text-gray-500 mt-0.5">{items.length} soru kayıtlı</p>
+          <p className="text-sm text-gray-500 mt-0.5">{items.length} soru kayıtlı — sıralamayı sürükleyerek değiştirin</p>
         </div>
         <button
           onClick={() => setShowForm(true)}
@@ -92,18 +163,34 @@ export default function FaqManager() {
           <p className="text-gray-400 text-sm mt-1">"Yeni Soru" butonuyla başlayın</p>
         </div>
       ) : (
-        <div className="space-y-3">
+        <div className="space-y-2">
           {items.map((item, index) => (
             <div
               key={item.id}
-              className={`group bg-white rounded-xl border transition-all duration-300 hover:shadow-md ${
+              draggable
+              onDragStart={() => handleDragStart(item.id)}
+              onDragEnter={() => handleDragEnter(item.id)}
+              onDragLeave={handleDragLeave}
+              onDragOver={handleDragOver}
+              onDrop={() => handleDrop(item.id)}
+              onDragEnd={handleDragEnd}
+              className={`group bg-white rounded-xl border transition-all duration-200 ${
                 item.is_active ? 'border-gray-200' : 'border-dashed border-gray-300 opacity-60'
+              } ${
+                dragId === item.id ? 'opacity-40 scale-[0.98] shadow-inner' : ''
+              } ${
+                dragOverId === item.id && dragId !== item.id
+                  ? 'border-primary-400 bg-primary-50/50 shadow-md -translate-y-0.5'
+                  : 'hover:shadow-md'
               }`}
             >
               <div className="flex items-start gap-3 p-4">
-                {/* Drag handle placeholder */}
-                <div className="shrink-0 mt-1 text-gray-300">
-                  <GripVertical className="w-4 h-4" />
+                {/* Drag handle */}
+                <div
+                  className="shrink-0 mt-1 text-gray-300 cursor-grab active:cursor-grabbing hover:text-gray-500 transition-colors"
+                  title="Sürükleyerek sıralayın"
+                >
+                  <GripVertical className="w-5 h-5" />
                 </div>
 
                 {/* Order number */}
@@ -121,7 +208,7 @@ export default function FaqManager() {
 
                     {/* Category badge */}
                     <span className="shrink-0 text-[10px] font-semibold uppercase tracking-wider text-primary-600 bg-primary-50 px-2 py-1 rounded-md">
-                      {item.category}
+                      {getCategoryLabel(item.category)}
                     </span>
                   </div>
 

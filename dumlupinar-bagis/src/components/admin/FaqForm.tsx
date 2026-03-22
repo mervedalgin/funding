@@ -3,6 +3,15 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
 import type { FaqItem } from '../../types/donation'
 
+const FAQ_CATEGORIES = [
+  { value: 'genel', label: 'Genel' },
+  { value: 'hukuki', label: 'Hukuki' },
+  { value: 'odeme', label: 'Ödeme' },
+  { value: 'bagis', label: 'Bağış Süreci' },
+  { value: 'okul', label: 'Okul' },
+  { value: 'ogrenci', label: 'Öğrenci' },
+] as const
+
 const schema = z.object({
   question: z.string().min(1, 'Soru zorunlu'),
   answer: z.string().min(1, 'Cevap zorunlu'),
@@ -53,7 +62,11 @@ export default function FaqForm({ item, onSubmit, onCancel }: FaqFormProps) {
       <div className="grid grid-cols-2 gap-4">
         <div>
           <label className={labelClass}>Kategori</label>
-          <input {...register('category')} className={inputClass} placeholder="genel" />
+          <select {...register('category')} className={inputClass}>
+            {FAQ_CATEGORIES.map(cat => (
+              <option key={cat.value} value={cat.value}>{cat.label}</option>
+            ))}
+          </select>
         </div>
         <div>
           <label className={labelClass}>Sıra</label>
@@ -90,3 +103,5 @@ export default function FaqForm({ item, onSubmit, onCancel }: FaqFormProps) {
     </form>
   )
 }
+
+export { FAQ_CATEGORIES }
