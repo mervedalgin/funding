@@ -1,0 +1,97 @@
+{
+  "nav": {
+    "home": "Anasayfa",
+    "legal": "Yasal Dayanak",
+    "contact": "İletişim",
+    "donors": "Bağışçılarımız",
+    "donate": "BAĞIŞ YAP",
+    "admin": "Yönetim",
+    "faq": "S.S.S"
+  },
+  "home": {
+    "title": "Dumlupınar İlkokulu - Bağış Sayfası",
+    "school_name": "Dumlupınar İlkokulu",
+    "subtitle": "Geleceğe Birlikte Yatırım Yapalım",
+    "location": "Birecik, Şanlıurfa",
+    "hero_desc": "Birecik'in kalbindeki okulumuzun öğrencileri, daha iyi bir eğitim ortamı için sizin desteğinize ihtiyaç duyuyor. Her katkı, bir çocuğun hayatında fark yaratır.",
+    "donate_btn": "Destek Ol",
+    "steps_badge": "3 Kolay Adım",
+    "steps_title": "Nasıl Çalışır?",
+    "step1_title": "İhtiyacı Seçin",
+    "step1_desc": "Okulumuzun ihtiyaç listesinden destek olmak istediğiniz kalemi seçin",
+    "step2_title": "Tutarı Belirleyin",
+    "step2_desc": "Tamamını, yarısını veya dilediğiniz kadar katkıda bulunun",
+    "step3_title": "Havaleyi Yapın",
+    "step3_desc": "IBAN bilgilerini kopyalayın ve bankanızdan havale gönderin",
+    "needs_title": "Okulumuzun İhtiyaçları",
+    "loading_error": "Veriler yüklenirken bir sorun oluştu. Lütfen sayfayı yenileyin.",
+    "all_met": "Tüm ihtiyaçlarımız karşılanmış durumda!",
+    "all_met_desc": "Destekleriniz için teşekkür ederiz. Yeni ihtiyaçlar için sayfamızı takip etmeye devam edin.",
+    "footer_quote": "Her bağış, bir öğrencinin geleceğine yapılan yatırımdır.",
+    "quick_links": "Hızlı Bağlantılar",
+    "contact_info": "İletişim"
+  },
+  "item": {
+    "back": "Tüm İhtiyaçları Gör",
+    "completed_title": "Bu ihtiyaç hayırseverlerimiz sayesinde karşılandı!",
+    "completed_desc": "Desteğiniz öğrencilerimizin yüzünü güldürdü. Diğer ihtiyaçlarımıza da göz atabilirsiniz.",
+    "see_others": "Diğer İhtiyaçları Gör",
+    "not_found": "Aradığınız ihtiyaç bulunamadı."
+  },
+  "card": {
+    "donate_btn": "Destek Ol",
+    "completed": "Tamamlandı",
+    "near_goal": "Hedefe yaklaştık!",
+    "first_donor": "İlk bağışçı siz olun!",
+    "donors_supported": "{{count}} hayırsever destek oldu"
+  },
+  "amount": {
+    "title": "Ne Kadar Destek Olmak İstersiniz?",
+    "full": "Tamamını Karşıla",
+    "full_desc": "Bu ihtiyacın tamamını karşılarsınız",
+    "half": "Yarısını Üstlen",
+    "half_desc": "İhtiyacın yarısına destek olursunuz",
+    "custom": "Dilediğin Kadar",
+    "custom_label": "Sen Belirle",
+    "custom_desc": "Her katkı değerlidir",
+    "min_warning": "Minimum katkı tutarı ₺{{min}}",
+    "custom_thanks": "₺{{amount}} ile harika bir destek olacaksınız!"
+  },
+  "payment": {
+    "title": "Bağışınızı Nasıl Göndermek İstersiniz?",
+    "transfer": "Havale / EFT",
+    "online": "Kredi Kartı",
+    "donor_name": "Adınız (opsiyonel)",
+    "donor_placeholder": "Bağışçı olarak görünecek isminiz",
+    "donor_info": "Bu bilgi bağışçılar listesinde görünecektir",
+    "iban_copied": "IBAN kopyalandı!",
+    "donor_label": "Bağışçı",
+    "ref_reminder": "Bankanızdan havale yaparken açıklama kısmına",
+    "ref_reminder_end": "kodunu yazmayı unutmayın.",
+    "transfer_done": "Havale Yaptım",
+    "thank_you": "Teşekkür ederiz, {{name}}!",
+    "thank_you_anon": "Teşekkür ederiz!",
+    "thank_desc": "Bağışınız okulumuzun öğrencileri için çok değerli. Desteğiniz hayat değiştiriyor.",
+    "whatsapp_notify": "Bağışınızın hızlıca eşleştirilmesi için lütfen okula bildirim gönderin:",
+    "whatsapp_btn": "WhatsApp ile Okula Bildir",
+    "copy_iban": "IBAN'ı Kopyala",
+    "copied": "Kopyalandı!",
+    "account_holder": "Hesap Sahibi",
+    "ref_label": "Havale Açıklaması",
+    "ref_desc": "Bağışınızın doğru ihtiyaçla eşleşmesi için bu kodu açıklama kısmına yazın",
+    "selected_amount": "Seçtiğiniz Tutar",
+    "online_banking": "Online Bankacılığa Git",
+    "online_preparing": "Online ödeme şu an hazırlanıyor."
+  },
+  "offline": {
+    "message": "İnternet bağlantınız kesildi.",
+    "cached": "Önbelleğe alınmış içerik gösteriliyor.",
+    "minutes": "{{count}} dakikadır çevrimdışı",
+    "retry": "Yeniden Dene"
+  },
+  "common": {
+    "loading": "Yükleniyor...",
+    "error": "Bir hata oluştu",
+    "close": "Kapat"
+  }
+}

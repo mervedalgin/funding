@@ -1,0 +1,97 @@
+{
+  "nav": {
+    "home": "Home",
+    "legal": "Legal Basis",
+    "contact": "Contact",
+    "donors": "Our Donors",
+    "donate": "DONATE",
+    "admin": "Admin",
+    "faq": "FAQ"
+  },
+  "home": {
+    "title": "Dumlupınar Primary School - Donation Page",
+    "school_name": "Dumlupınar Primary School",
+    "subtitle": "Let's Invest in the Future Together",
+    "location": "Birecik, Şanlıurfa",
+    "hero_desc": "The students of our school in the heart of Birecik need your support for a better educational environment. Every contribution makes a difference in a child's life.",
+    "donate_btn": "Donate",
+    "steps_badge": "3 Easy Steps",
+    "steps_title": "How It Works",
+    "step1_title": "Choose a Need",
+    "step1_desc": "Select the item you want to support from our school's needs list",
+    "step2_title": "Set the Amount",
+    "step2_desc": "Contribute the full amount, half, or as much as you'd like",
+    "step3_title": "Make the Transfer",
+    "step3_desc": "Copy the IBAN details and send the transfer from your bank",
+    "needs_title": "Our School's Needs",
+    "loading_error": "An error occurred while loading data. Please refresh the page.",
+    "all_met": "All our needs have been met!",
+    "all_met_desc": "Thank you for your support. Keep following our page for new needs.",
+    "footer_quote": "Every donation is an investment in a student's future.",
+    "quick_links": "Quick Links",
+    "contact_info": "Contact"
+  },
+  "item": {
+    "back": "View All Needs",
+    "completed_title": "This need has been met thanks to our donors!",
+    "completed_desc": "Your support has made our students smile. You can also check out our other needs.",
+    "see_others": "View Other Needs",
+    "not_found": "The requested item was not found."
+  },
+  "card": {
+    "donate_btn": "Donate",
+    "completed": "Completed",
+    "near_goal": "Almost there!",
+    "first_donor": "Be the first donor!",
+    "donors_supported": "{{count}} donors have contributed"
+  },
+  "amount": {
+    "title": "How Much Would You Like to Contribute?",
+    "full": "Cover Full Amount",
+    "full_desc": "You will cover the entire need",
+    "half": "Cover Half",
+    "half_desc": "You will support half of the need",
+    "custom": "You Decide",
+    "custom_label": "Custom Amount",
+    "custom_desc": "Every contribution counts",
+    "min_warning": "Minimum contribution amount is ₺{{min}}",
+    "custom_thanks": "₺{{amount}} — you're making an amazing contribution!"
+  },
+  "payment": {
+    "title": "How Would You Like to Send Your Donation?",
+    "transfer": "Bank Transfer",
+    "online": "Credit Card",
+    "donor_name": "Your Name (optional)",
+    "donor_placeholder": "Your name as it will appear in the donors list",
+    "donor_info": "This information will be shown in the donors list",
+    "iban_copied": "IBAN copied!",
+    "donor_label": "Donor",
+    "ref_reminder": "When making the transfer, don't forget to write",
+    "ref_reminder_end": "in the description field.",
+    "transfer_done": "Transfer Done",
+    "thank_you": "Thank you, {{name}}!",
+    "thank_you_anon": "Thank you!",
+    "thank_desc": "Your donation is very valuable for our school's students. Your support changes lives.",
+    "whatsapp_notify": "Please notify the school for quick matching of your donation:",
+    "whatsapp_btn": "Notify School via WhatsApp",
+    "copy_iban": "Copy IBAN",
+    "copied": "Copied!",
+    "account_holder": "Account Holder",
+    "ref_label": "Transfer Reference",
+    "ref_desc": "Write this code in the description field so your donation matches the right need",
+    "selected_amount": "Selected Amount",
+    "online_banking": "Go to Online Banking",
+    "online_preparing": "Online payment is being prepared."
+  },
+  "offline": {
+    "message": "You are offline.",
+    "cached": "Showing cached content.",
+    "minutes": "Offline for {{count}} minutes",
+    "retry": "Retry"
+  },
+  "common": {
+    "loading": "Loading...",
+    "error": "An error occurred",
+    "close": "Close"
+  }
+}
