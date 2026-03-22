@@ -144,16 +144,23 @@ export default function PaymentMethods({ channels, paymentRef, selectedAmount, i
                   try {
                     const table = donationType === 'student' ? 'student_donations' : 'donations'
                     const fkField = donationType === 'student' ? 'student_need_id' : 'item_id'
-                    await supabase.from(table).insert({
-                      [fkField]: itemId || null,
+                    const insertData: Record<string, unknown> = {
                       donor_name: donorName || null,
                       amount: selectedAmount,
                       payment_method: 'bank_transfer',
                       payment_ref: paymentRef || null,
                       status: 'pending',
-                    })
-                  } catch {
-                    // Kayıt oluşturulamasa bile kullanıcıya teşekkür göster
+                    }
+                    // Only add FK if itemId exists
+                    if (itemId) {
+                      insertData[fkField] = itemId
+                    }
+                    const { error } = await supabase.from(table).insert(insertData)
+                    if (error) {
+                      console.error('Bağış kaydı oluşturulamadı:', error.message, error.details)
+                    }
+                  } catch (err) {
+                    console.error('Bağış kaydı hatası:', err)
                   }
                   setSubmitting(false)
                   setTransferDone(true)
