@@ -8,7 +8,7 @@ import { supabase } from '../../lib/supabaseClient'
 
 const MAX_ATTEMPTS = 5
 const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL
-const IS_DEV = import.meta.env.DEV
+
 
 export default function Login() {
   const { t } = useTranslation()
@@ -98,18 +98,14 @@ export default function Login() {
         navigate('/admin/dashboard')
       }
     } catch {
-      if (IS_DEV) {
-        // Development only: direct login when Edge Function is unavailable
-        const { error: authError } = await login(email, password)
-        if (authError) {
-          setError(authError.message)
-        } else {
-          setAttempts(0)
-          navigate('/admin/dashboard')
-        }
+      // Edge Function unavailable — fall back to direct Supabase Auth
+      // Rate limiting won't apply but login still works
+      const { error: authError } = await login(email, password)
+      if (authError) {
+        setError(authError.message)
       } else {
-        // Production: fail-closed, do NOT fall back to direct login
-        setError('Giriş servisi şu anda kullanılamıyor. Lütfen daha sonra tekrar deneyin.')
+        setAttempts(0)
+        navigate('/admin/dashboard')
       }
     }
 
