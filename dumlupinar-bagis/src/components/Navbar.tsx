@@ -11,9 +11,9 @@ export default function Navbar() {
 
   const navLinks = [
     { label: t('nav.home'), href: '/' },
+    { label: t('nav.stories'), href: '/bagis-hikayeleri' },
     { label: t('nav.legal'), href: '/yasal-dayanak' },
     { label: t('nav.donors'), href: '/bagiscilarimiz' },
-    { label: t('nav.contact'), href: '/iletisim' },
     { label: t('nav.faq'), href: '/sss' },
   ]
 

@@ -15,6 +15,7 @@ import {
   GraduationCap,
   MessageCircle,
   Scale,
+  BookHeart,
 } from 'lucide-react'
 import { useAuth } from '../../hooks/useAuth'
 
@@ -26,6 +27,7 @@ const navItems = [
   { label: 'Öğrenci İhtiyaçları', to: '/admin/students', icon: GraduationCap },
   { label: 'S.S.S', to: '/admin/faq', icon: MessageCircle },
   { label: 'Yasal Dayanak', to: '/admin/legal', icon: Scale },
+  { label: 'Bağış Hikayeleri', to: '/admin/stories', icon: BookHeart },
   { label: 'Ödeme Kanalları', to: '/admin/payment-channels', icon: CreditCard },
   { label: 'Ayarlar', to: '/admin/settings', icon: Settings },
 ]

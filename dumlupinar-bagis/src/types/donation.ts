@@ -137,6 +137,26 @@ export interface FaqItem {
   updated_at: string
 }
 
+export interface DonationStory {
+  id: string
+  title: string
+  slug: string
+  summary: string | null
+  content: string
+  cover_image_url: string | null
+  gallery_images: string[]
+  donation_item_id: string | null
+  donation_amount: number | null
+  impact_text: string | null
+  completed_at: string | null
+  tags: string[]
+  is_published: boolean
+  view_count: number
+  sort_order: number
+  created_at: string
+  updated_at: string
+}
+
 export interface LegalBasisItem {
   id: string
   title: string

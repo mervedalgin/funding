@@ -20,6 +20,9 @@ const AdminDonations = lazy(() => import('./pages/admin/Donations'))
 const AdminStudents = lazy(() => import('./pages/admin/Students'))
 const AdminFAQ = lazy(() => import('./pages/admin/AdminFAQ'))
 const AdminLegal = lazy(() => import('./pages/admin/Legal'))
+const AdminStories = lazy(() => import('./pages/admin/Stories'))
+const StoriesPage = lazy(() => import('./pages/StoriesPage'))
+const StoryDetail = lazy(() => import('./pages/StoryDetail'))
 const PaymentChannels = lazy(() => import('./pages/admin/PaymentChannels'))
 const AdminSettings = lazy(() => import('./pages/admin/Settings'))
 
@@ -43,6 +46,8 @@ export default function App() {
           <Route path="/odeme-sonucu" element={<Suspense fallback={AdminFallback}><PaymentResult /></Suspense>} />
           <Route path="/student-need/:id" element={<Suspense fallback={AdminFallback}><StudentNeedDetail /></Suspense>} />
           <Route path="/sss" element={<Suspense fallback={AdminFallback}><FAQ /></Suspense>} />
+          <Route path="/bagis-hikayeleri" element={<Suspense fallback={AdminFallback}><StoriesPage /></Suspense>} />
+          <Route path="/bagis-hikayeleri/:slug" element={<Suspense fallback={AdminFallback}><StoryDetail /></Suspense>} />
           <Route path="/admin" element={<Suspense fallback={AdminFallback}><Login /></Suspense>} />
           <Route path="/admin/dashboard" element={<Suspense fallback={AdminFallback}><AdminGuard><Dashboard /></AdminGuard></Suspense>} />
           <Route path="/admin/items" element={<Suspense fallback={AdminFallback}><AdminGuard><AdminItems /></AdminGuard></Suspense>} />
@@ -50,6 +55,7 @@ export default function App() {
           <Route path="/admin/students" element={<Suspense fallback={AdminFallback}><AdminGuard><AdminStudents /></AdminGuard></Suspense>} />
           <Route path="/admin/faq" element={<Suspense fallback={AdminFallback}><AdminGuard><AdminFAQ /></AdminGuard></Suspense>} />
           <Route path="/admin/legal" element={<Suspense fallback={AdminFallback}><AdminGuard><AdminLegal /></AdminGuard></Suspense>} />
+          <Route path="/admin/stories" element={<Suspense fallback={AdminFallback}><AdminGuard><AdminStories /></AdminGuard></Suspense>} />
           <Route path="/admin/payment-channels" element={<Suspense fallback={AdminFallback}><AdminGuard><PaymentChannels /></AdminGuard></Suspense>} />
           <Route path="/admin/settings" element={<Suspense fallback={AdminFallback}><AdminGuard><AdminSettings /></AdminGuard></Suspense>} />
           <Route path="*" element={<NotFound />} />

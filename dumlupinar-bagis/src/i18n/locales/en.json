@@ -6,7 +6,8 @@
     "donors": "Our Donors",
     "donate": "DONATE",
     "admin": "Admin",
-    "faq": "FAQ"
+    "faq": "FAQ",
+    "stories": "Stories"
   },
   "home": {
     "title": "Dumlupınar Primary School - Donation Page",
@@ -160,6 +161,18 @@
     "invalid": "Invalid username or password ({{remaining}} attempts left)",
     "countdown": "Wait {{time}} to try again",
     "service_unavailable": "Login service is currently unavailable. Please try again later."
+  },
+  "stories": {
+    "title": "Donation Stories",
+    "subtitle": "Stories of completed donations. Every donation makes a difference in a child's life.",
+    "meta_desc": "Dumlupınar Primary School donation stories. The impact of completed donations and student stories.",
+    "cta_btn": "Write Your Own Story!",
+    "read_more": "Read More",
+    "all": "All",
+    "empty": "No stories have been shared yet.",
+    "footer_cta_title": "Write Your Own Story!",
+    "footer_cta_desc": "Every donation creates a story. Support our school's needs and become part of these stories.",
+    "share": "Share This Story"
   },
   "offline": {
     "message": "You are offline.",

@@ -6,7 +6,8 @@
     "donors": "Bağışçılarımız",
     "donate": "BAĞIŞ YAP",
     "admin": "Yönetim",
-    "faq": "S.S.S"
+    "faq": "S.S.S",
+    "stories": "Hikayeler"
   },
   "home": {
     "title": "Dumlupınar İlkokulu - Bağış Sayfası",
@@ -160,6 +161,18 @@
     "invalid": "Geçersiz kullanıcı adı veya şifre ({{remaining}} deneme kaldı)",
     "countdown": "Tekrar deneyebilmek için {{time}} bekleyin",
     "service_unavailable": "Giriş servisi şu anda kullanılamıyor. Lütfen daha sonra tekrar deneyin."
+  },
+  "stories": {
+    "title": "Bağış Hikayeleri",
+    "subtitle": "Tamamlanan bağışların hikayeleri. Her bağış, bir çocuğun hayatında fark yaratan bir hikaye.",
+    "meta_desc": "Dumlupınar İlkokulu bağış hikayeleri. Tamamlanan bağışların etkisi ve öğrenci hikayeleri.",
+    "cta_btn": "Bir Hikayede Sen Yaz!",
+    "read_more": "Devamını Oku",
+    "all": "Tümü",
+    "empty": "Henüz hikaye paylaşılmadı.",
+    "footer_cta_title": "Bir Hikayede Sen Yaz!",
+    "footer_cta_desc": "Her bağış bir hikaye yaratır. Okulumuzun ihtiyaçlarına destek olarak sen de bu hikayelerin bir parçası ol.",
+    "share": "Bu Hikayeyi Paylaş"
   },
   "offline": {
     "message": "İnternet bağlantınız kesildi.",

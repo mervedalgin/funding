@@ -114,6 +114,26 @@ export const LegalBasisItemSchema = z.object({
   updated_at: z.string(),
 })
 
+export const DonationStorySchema = z.object({
+  id: z.string(),
+  title: z.string(),
+  slug: z.string(),
+  summary: z.string().nullable(),
+  content: z.string(),
+  cover_image_url: z.string().nullable(),
+  gallery_images: z.array(z.string()).default([]),
+  donation_item_id: z.string().nullable(),
+  donation_amount: z.number().nullable(),
+  impact_text: z.string().nullable(),
+  completed_at: z.string().nullable(),
+  tags: z.array(z.string()).default([]),
+  is_published: z.boolean(),
+  view_count: z.number(),
+  sort_order: z.number(),
+  created_at: z.string(),
+  updated_at: z.string(),
+})
+
 export function parseArray<T>(schema: z.ZodType<T>, data: unknown): T[] {
   const result = z.array(schema).safeParse(data)
   if (!result.success) {
