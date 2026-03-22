@@ -140,7 +140,7 @@ export default function Donors() {
               >
                 <div className="flex items-center gap-3 mb-3">
                   <div className={`w-11 h-11 rounded-full bg-gradient-to-br ${avatarGradients[index % avatarGradients.length]} flex items-center justify-center text-white text-sm font-bold shrink-0`}>
-                    <Heart className="w-5 h-5 text-white fill-white" />
+                    <Heart className="w-5 h-5 text-white fill-white animate-pulse-soft" />
                   </div>
                   <div className="min-w-0">
                     <p className="font-semibold text-gray-800 truncate">{donor.donor_name}</p>
@@ -175,7 +175,7 @@ export default function Donors() {
                 <X className="w-5 h-5" />
               </button>
               <div className={`w-16 h-16 rounded-full bg-gradient-to-br ${avatarGradients[filtered.findIndex(d => d === selectedDonor) % avatarGradients.length]} flex items-center justify-center text-white text-xl font-bold mx-auto mb-3 ring-4 ring-white/30`}>
-                <Heart className="w-7 h-7 text-white fill-white" />
+                <Heart className="w-7 h-7 text-white fill-white animate-pulse-soft" />
               </div>
               <h3 className="text-xl font-bold" style={{ fontFamily: 'var(--font-heading)' }}>{selectedDonor.donor_name}</h3>
               <span className={`inline-block mt-2 text-xs font-semibold uppercase px-2.5 py-1 rounded-full ${
